@@ -1,5 +1,5 @@
-import { useState } from "react"
-import {signupApi} from '../../api/user'
+import { useEffect, useState } from "react"
+import { signupApi } from '../../api/user'
 
 const Register = () => {
     const [firstName, setFirstName] = useState('')
@@ -14,57 +14,69 @@ const Register = () => {
     const [passwordVal, setPasswordVal] = useState(false)
     const [confirmPassword, setConfirmPassword] = useState('')
     const [confirmPasswordVal, setConfirmPasswordVal] = useState(false)
+    const [blankCheck, setBlankCheck] = useState(false)
+    const [valError, setValError] = useState(false)
+    const [emailExist, setEmailExist] = useState(false)
+    const [userNameExist, setUserNameExist] = useState(false)
+    const [successMessage, setSuccessMessage] = useState(false)
 
-    const firstNameChange = (e) => {
-        let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
-        setFirstName(e.target.value)
+    useEffect(() => {
+        let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
         if (firstName.match(format)) {
             setFirstNameValidate(true)
         } else {
             setFirstNameValidate(false)
         }
-    }
-    const lastNameChange = (e) => {
-        setLastName(e.target.value)
-        let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
-        setLastName(e.target.value)
         if (lastName.match(format)) {
             setLastNameVal(true)
         } else {
             setLastNameVal(false)
         }
-    }
-    const userNameChange = (e) => {
-        setUserName(e.target.value)
-        // let format =/^[a-zA-Z\-]+$/
-        // if(userName.match(format)){
-        //     setUserNameVal(true)
-        // }else{
-        //     setUserNameVal(true)  
-        // }
-    }
-    const emailChange = (e) => {
-        setEmail(e.target.value)
         if (email.includes("@")) {
             setEmailVal(false)
         } else {
             setEmailVal(true)
         }
-    }
-    const passwordChange = (e) => {
-        setPassword(e.target.value)
+        if (!email.includes("@")) {
+            setEmailVal(true)
+        } else {
+            setEmailVal(false)
+        }
         if (password < 8) {
             setPasswordVal(true)
         } else {
             setPasswordVal(false)
         }
+        if (password === confirmPassword) {
+            setConfirmPasswordVal(false)
+        } else {
+            setConfirmPasswordVal(true)
+        }
+    }, [firstName, lastName, userName, email, password, confirmPassword])
+
+    const firstNameChange = (e) => {
+        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setFirstName(e.target.value)
+    }
+    const lastNameChange = (e) => {
+        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setLastName(e.target.value)
+
+    }
+    const userNameChange = (e) => {
+        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setUserName(e.target.value)
+    }
+    const emailChange = (e) => {
+        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setEmail(e.target.value)
+    }
+    const passwordChange = (e) => {
+        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setPassword(e.target.value)
     }
     const confirmPasswordChange = (e) => {
-        if (password.trim() !== confirmPassword.trim()) {
-            setConfirmPasswordVal(true)
-        } else {
-            setConfirmPasswordVal(false)
-        }
+        setBlankCheck(blankCheck&&setBlankCheck(false))
         setConfirmPassword(e.target.value)
     }
     let signupData = {
@@ -75,9 +87,26 @@ const Register = () => {
         password: password,
     }
 
-    const handleSignup =async (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault()
-        let data = await signupApi(signupData)
+        if (firstName !== "" && lastName !== "" && userName !== "" && email !== "" && password !== "" && confirmPassword !== "") {
+            console.log(!firstNameValidate , !lastNameVal , !emailVal , !passwordVal , !confirmPassword);
+            if (!firstNameValidate && !lastNameVal && !emailVal && !passwordVal && confirmPassword) {
+                console.log("helo");
+                let data = await signupApi(signupData)
+                if(data?.userNameExist){
+                    setUserNameExist(true)
+                }else if(data?.emailExist){
+                    setEmailExist(true)
+                }else if(data?.sendEmail){
+                    setSuccessMessage(true)
+                }
+            }else{
+                setValError(true)
+            }
+        } else {
+            setBlankCheck(true)
+        }
     }
 
     let valid = "focus:outline-1 outline-green-600 rounded-lg bg-snow-drift-100 mt-2 p-2 focus:border-blue-500 focus:bg-snow-drift-100 "
@@ -94,22 +123,24 @@ const Register = () => {
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>First Name</label>
                         <input value={firstName} onChange={firstNameChange} className={firstNameValidate ? notValid : valid} type="text" />
-                        {firstNameValidate && <p className="text-red-600 text-sm">special</p>}
+                        {firstNameValidate && <p className="text-red-600 text-sm">special characters not allowed</p>}
                     </div>
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>Last Name</label>
                         <input value={lastName} onChange={lastNameChange} className={lastNameVal ? notValid : valid} type="text" />
-                        {lastNameVal && <p className="text-red-600 text-sm">special characters not excepted</p>}
+                        {lastNameVal && <p className="text-red-600 text-sm">special characters not allowed</p>}
                     </div>
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>username</label>
                         <input value={userName} onChange={userNameChange} className={userNameVal ? notValid : valid} type="text" />
-                        {userNameVal && <p className="text-red-600 text-sm">special</p>}
+                        {userNameVal && <p className="text-red-600 text-sm">Username exist..!</p>}
+                        {userNameExist && <p className="text-red-600 text-sm text-center">This username id Exist</p>}
                     </div>
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>Email</label>
                         <input value={email} onChange={emailChange} className={emailVal ? notValid : valid} type="text" />
                         {emailVal && <p className="text-red-600 text-sm">Need "@"</p>}
+                        {emailExist && <p className="text-red-600 text-sm text-center">This Email id Exist</p>}
                     </div>
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>Password</label>
@@ -132,6 +163,8 @@ const Register = () => {
                         <p className="flex items-center"><input className="mr-2 " type="checkbox" />Remember Me</p>
                         <p className="font-semibold text-blue-900">Forgot password ?</p>
                     </div>
+                    {blankCheck && <p className="text-red-600 text-sm text-center">Fill all Fields</p>}
+                    {valError && <p className="text-red-600 text-sm text-center">Some Data is Wrong</p>}
                     <button className="w-full my-5 py-2 bg-heavy-metal-500 shadow-lg shadow-heavy-metal-500/40 hover:shadow-heavy-metal-700 text-white font-semibold rounded-lg" onClick={handleSignup}>Sign In</button>
                 </form>
             </div>

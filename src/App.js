@@ -4,6 +4,7 @@ import './App.css';
 import Register from "./components/Register/Register";
 import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
+import VerifyEmail from "./components/Verifyemail/VerifyEmail";
 
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
         <Route path="/" element={<Home />} exact />
         <Route path="/login" element={<Login />} exact />
         <Route path="/register" element={<Register />} exact />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} exact/>
+        <Route path="/:id/Verify/:token" element={<VerifyEmail />} />
       </Routes>
   </div>);
 }

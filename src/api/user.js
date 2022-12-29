@@ -12,3 +12,10 @@ export const signupApi =async (signupData)=>{
     console.log(data);
  return data;
 }
+
+export const verifyEmailFunc =async (id,token)=>{
+    console.log(id,token);
+    let { data } = await API.get(`/verifySignup/${id}/${token}`)
+    console.log(data);
+ return data;
+}
