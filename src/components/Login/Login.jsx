@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
-
+import { useNavigate } from "react-router-dom"
+// import axios from "axios"
+import {loginApi} from '../../api/user'
 const Login = () => {
 
     const [password, setPassword] = useState('')
@@ -7,15 +9,40 @@ const Login = () => {
     const [checked,setChecked] = useState(false)
     const [emailValidate, setEmailValidate] = useState(false)
     const [passwordValid, setPasswordValid] = useState(false)
-
+    const [emailError,setEmailError] = useState(false)
+    const [passwordError,setPasswordError] = useState(false)
+    const [authCommonMessage, setAuthCommonMessage] = useState('')
+const navigate = useNavigate()
     useEffect(() => {
-        setEmailValidate(email.includes('@gmail.com') && email.trim().length > 7)
+        setEmailValidate(email.includes('@') && email.trim().length > 7)
         setPasswordValid(password.length > 7) 
     }, [email,password])
 
-    const handleLogin = (e) =>{
+    const handleLogin = async(e) =>{
         e.preventDefault()
-        console.log(password,email,checked);
+        if(emailValidate && passwordValid){
+            let data =await loginApi(email,password)
+            console.log(data);
+            if(data?.passwordError){
+                setPasswordError(true)
+            }else if(data?.emailError){
+                setEmailError(true)
+            }else if(data?.success){
+                navigate('/')
+            }
+        }else{
+            setAuthCommonMessage('something wrong')
+        } 
+    }
+
+    const emailChange = (e) =>{ 
+        emailError&&setEmailError(false)
+        setEmail(e.target.value) 
+    }
+
+    const passwordChange = (e) =>{ 
+        passwordError&&setPasswordError(false)
+        setPassword(e.target.value)
     }
 
     return (
@@ -29,12 +56,14 @@ const Login = () => {
                     {
                         <div className="flex flex-col text-heavy-metal-800 py-2 ">
                             <label>Email</label>
+                            
                             <input
                                 className={emailValidate ? "focus:outline-1 outline-green-600 rounded-lg bg-snow-drift-100 mt-2 p-2 focus:border-blue-500 focus:bg-snow-drift-100  "  : "focus:outline-1 outline-red-500 text-red-600 rounded-lg bg-snow-drift-200 mt-2 p-2 focus:border-blue-500 focus:bg-snow-drift-50 "}
                                 type="email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={emailChange}
                             />
+                          {emailError? <p className="text-sm text-red-600">Email not registered*</p> : <p hidden></p>}
                         </div>
                     }
 
@@ -45,7 +74,8 @@ const Login = () => {
                                 className={passwordValid?"focus:outline-1 outline-green-600 rounded-lg bg-snow-drift-100 mt-2 p-2 focus:border-blue-500 focus:bg-snow-drift-100  "  : "focus:outline-1 outline-red-500 text-red-600 rounded-lg bg-snow-drift-200 mt-2 p-2 focus:border-blue-500 focus:bg-snow-drift-50 "}
                                 type="password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)} />
+                                onChange={passwordChange} />
+                                {passwordError? <p className="text-sm text-red-600">Wrong Password*</p> : <p hidden></p>}
                         </div>
                     }
                     <div className="flex justify-center">
@@ -58,7 +88,11 @@ const Login = () => {
                         <p className="flex items-center"><input className="mr-2" type="checkbox" checked={checked} onChange={(e)=>setChecked(e.target.checked)}/>Remember Me</p>
                         <p className=" text-blue-800">Forgot password ?</p>
                     </div>
-                    <button className="w-full my-5 py-2 bg-heavy-metal-500 shadow-lg text-heavy-metal-100/40 hover:shadow-heavy-metal-700 text-white font-semibold rounded-lg" onClick={handleLogin}>Sign In</button>
+                    <p className="text-sm text-red-600">{authCommonMessage}</p>
+                    {emailValidate&&passwordValid?
+                        <button className="w-full my-5 py-2 bg-heavy-metal-500 shadow-lg text-heavy-metal-100/40 hover:shadow-heavy-metal-700 text-white font-semibold rounded-lg" onClick={handleLogin}>Sign In</button>
+                        :<button className="w-full my-5 py-2 opacity-70 bg-gray-500 shadow-lg text-white font-semibold rounded-lg" onClick={handleLogin} disabled>Sign In</button>
+                    }
                 </form>
             </div>
         </div>

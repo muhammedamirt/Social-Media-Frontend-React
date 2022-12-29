@@ -1,18 +1,14 @@
-import Sidebar from "../../components/Navigationbar/Sidenavbar"
-import PostCard from "../../components/PostCard/PostCard"
+import Layout from "../../components/Layout/Layout"
 import Story from "../../components/Story/Story"
+import PostCard from "../../components/PostCard/PostCard"
+
 
 const Home = () => {
   return (
-    <div className="flex max-w-6xl mt-4 mx-auto gap-6">
-      <div className="w-3/12">
-        <Sidebar />
-      </div>
-      <div className="w-8/12">
-        <Story />
-        <PostCard />
-      </div>
-    </div>
+    <Layout>
+      <Story />
+      <PostCard />
+    </Layout>
   )
 }
 

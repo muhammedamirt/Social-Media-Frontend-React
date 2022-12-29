@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card } from "../Card/Card"
+import {Link} from 'react-router-dom'
 import OutsideClickHandler from 'react-outside-click-handler';
 const PostForm = () => {
   const [dropdown, setDropDown] = useState(false)
@@ -12,7 +13,7 @@ const PostForm = () => {
           </div>
         </div>
         <div className="grow">
-          <h6 className="font-semibold hover:underline cursor-pointer">Christopher</h6>
+          <Link to={'/profile'} className="font-semibold hover:underline cursor-pointer">Christopher</Link>
           <p className="text-blue-600 text-sm">Location</p>
         </div>
         <div>
@@ -53,7 +54,7 @@ const PostForm = () => {
           </OutsideClickHandler>
         </div>
       </div>
-      <div>
+      <div className="mt-2">
         <div className="rounded-md overflow-hidden">
           <img src="https://images.pexels.com/photos/589840/pexels-photo-589840.jpeg?cs=srgb&dl=pexels-valiphotos-589840.jpg&fm=jpg" alt="post" />
         </div>
