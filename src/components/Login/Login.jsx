@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 // import axios from "axios"
 import {loginApi} from '../../api/user'
+import { routeChanged } from "../../redux/topLoadingBar"
 const Login = () => {
-
+    const dispatch = useDispatch()
+    dispatch(routeChanged())
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [checked,setChecked] = useState(false)

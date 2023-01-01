@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { signupApi } from '../../api/user'
+import { routeChanged } from "../../redux/topLoadingBar"
 
 const Register = () => {
+    const dispatch = useDispatch()
+    dispatch(routeChanged())
     const [firstName, setFirstName] = useState('')
     const [firstNameValidate, setFirstNameValidate] = useState(false)
     const [lastName, setLastName] = useState('')
@@ -22,32 +26,27 @@ const Register = () => {
 
     useEffect(() => {
         let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
-        if (firstName.match(format)) {
+        if (firstName.match(format) && firstName !== "") {
             setFirstNameValidate(true)
         } else {
             setFirstNameValidate(false)
         }
-        if (lastName.match(format)) {
+        if (lastName.match(format) && lastName !== "") {
             setLastNameVal(true)
         } else {
             setLastNameVal(false)
         }
-        if (email.includes("@")) {
-            setEmailVal(false)
-        } else {
-            setEmailVal(true)
-        }
-        if (!email.includes("@")) {
+        if (!email.includes("@") && email !== "") {
             setEmailVal(true)
         } else {
             setEmailVal(false)
         }
-        if (password < 8) {
+        if (password < 8 && password !== "") {
             setPasswordVal(true)
         } else {
             setPasswordVal(false)
         }
-        if (password === confirmPassword) {
+        if (password === confirmPassword && confirmPassword !== "") {
             setConfirmPasswordVal(false)
         } else {
             setConfirmPasswordVal(true)
@@ -55,28 +54,28 @@ const Register = () => {
     }, [firstName, lastName, userName, email, password, confirmPassword])
 
     const firstNameChange = (e) => {
-        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setBlankCheck(blankCheck && setBlankCheck(false))
         setFirstName(e.target.value)
     }
     const lastNameChange = (e) => {
-        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setBlankCheck(blankCheck && setBlankCheck(false))
         setLastName(e.target.value)
 
     }
     const userNameChange = (e) => {
-        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setBlankCheck(blankCheck && setBlankCheck(false))
         setUserName(e.target.value)
     }
     const emailChange = (e) => {
-        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setBlankCheck(blankCheck && setBlankCheck(false))
         setEmail(e.target.value)
     }
     const passwordChange = (e) => {
-        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setBlankCheck(blankCheck && setBlankCheck(false))
         setPassword(e.target.value)
     }
     const confirmPasswordChange = (e) => {
-        setBlankCheck(blankCheck&&setBlankCheck(false))
+        setBlankCheck(blankCheck && setBlankCheck(false))
         setConfirmPassword(e.target.value)
     }
     let signupData = {
@@ -90,18 +89,18 @@ const Register = () => {
     const handleSignup = async (e) => {
         e.preventDefault()
         if (firstName !== "" && lastName !== "" && userName !== "" && email !== "" && password !== "" && confirmPassword !== "") {
-            console.log(!firstNameValidate , !lastNameVal , !emailVal , !passwordVal , !confirmPassword);
+            console.log(!firstNameValidate, !lastNameVal, !emailVal, !passwordVal, !confirmPassword);
             if (!firstNameValidate && !lastNameVal && !emailVal && !passwordVal && confirmPassword) {
                 console.log("helo");
                 let data = await signupApi(signupData)
-                if(data?.userNameExist){
+                if (data?.userNameExist) {
                     setUserNameExist(true)
-                }else if(data?.emailExist){
+                } else if (data?.emailExist) {
                     setEmailExist(true)
-                }else if(data?.sendEmail){
+                } else if (data?.sendEmail) {
                     setSuccessMessage(true)
                 }
-            }else{
+            } else {
                 setValError(true)
             }
         } else {
@@ -115,7 +114,7 @@ const Register = () => {
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full sm:container'>
             <div className="hidden sm:block">
-                <img className="w-full h-full object-cover" src="https://media.smallbiztrends.com/2022/01/social-audio.png" alt="images" />
+                <img className="w-full h-full overflow-hidden object-cover" src="https://media.smallbiztrends.com/2022/01/social-audio.png" alt="images" />
             </div>
             <div className="bgDivHandling flex flex-col justify-center">
                 <form className="bg-snow-drift-50 max-w-[500px] w-full mx-auto p-8 px-8 rounded-lg shadow-md shadow-heavy-metal-900 mt-5 mb-5">
@@ -165,6 +164,7 @@ const Register = () => {
                     </div>
                     {blankCheck && <p className="text-red-600 text-sm text-center">Fill all Fields</p>}
                     {valError && <p className="text-red-600 text-sm text-center">Some Data is Wrong</p>}
+                    {successMessage && <p className="text-green-800 font-bold text-center">Verification link sent to your Email</p>}
                     <button className="w-full my-5 py-2 bg-heavy-metal-500 shadow-lg shadow-heavy-metal-500/40 hover:shadow-heavy-metal-700 text-white font-semibold rounded-lg" onClick={handleSignup}>Sign In</button>
                 </form>
             </div>
