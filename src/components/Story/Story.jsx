@@ -14,6 +14,7 @@ const Story = () => {
                 <Avatars />
                 <Avatars />
                 <Avatars />
+                <Avatars />
             </div>
         </ Card>
     )

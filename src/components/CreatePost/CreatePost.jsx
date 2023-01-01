@@ -1,30 +1,71 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { Card } from "../Card/Card"
+import {routeChanged} from '../../redux/topLoadingBar'
+import CameraTab from "../CreatePostTabs/CameraTab"
+import FileTab from "../CreatePostTabs/FileTab"
+import StoryTab from "../CreatePostTabs/StoryTab"
 import Layout from "../Layout/Layout"
 
+
 const CreatePost = () => {
-    const [image, setImage] = useState('')
+    const dispatch = useDispatch()
+    dispatch(routeChanged())
+    const [cameraTab, setCameraTab] = useState(true)
+    const [fileTab, setFileTab] = useState(false)
+    const [storyTab, setStoryTab] = useState(false)
+    const handleCameraTab = () => {
+        setStoryTab(false)
+        setFileTab(false)
+        setCameraTab(true)
+    }
+    const handleFileTab = () => {
+        setStoryTab(false)
+        setCameraTab(false)
+        setFileTab(true)
+    }
+
+    const handleStoryTab = () => {
+        setCameraTab(false)
+        setFileTab(false)
+        setStoryTab(true)
+    }
+
+    const activeTab = "flex gap-2 bg-heavy-metal-200 rounded-t py-2 px-3 border-b-4 border-heavy-metal-500 font-bold cursor-pointer"
+    const inActiveTab = "hover:bg-heavy-metal-300 rounded py-2 px-5 font-bold flex gap-2 cursor-pointer"
     return (
         <Layout>
             <Card>
-                <div className={image !== "" ? "w-4/5 justify-center ml-14" : "w-4/5 justify-center ml-14 hidden"}>
-                    <img src="https://pixlr.com/images/index/remove-bg.webp" alt="" />
-                </div>
-            </Card>
-            <Card>
-                <div className="flex items-center justify-center w-full">
-                    <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <svg aria-hidden="true" className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                        </div>
-                        <input id="dropzone-file" type="file" className="hidden" />
-                    </label>
-                </div>
-                <button className="w-full bg-black text-white py-3 rounded-lg mt-1">Upload</button>
-            </Card>
+                <div className="flex justify-between px-6 ">
+                    <span className={cameraTab ? activeTab : inActiveTab} onClick={handleCameraTab}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                        </svg>
+                        <p>Camera</p>
+                    </span>
+                    <span className={fileTab ? activeTab : inActiveTab} onClick={handleFileTab}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 13.5H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                        </svg>
 
+                        <p>File</p>
+                    </span>
+                    <span className={storyTab ? activeTab : inActiveTab} onClick={handleStoryTab}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+
+                        <p>Story</p>
+                    </span>
+
+                </div>
+            </Card>
+            <div>
+                {cameraTab && <CameraTab />}
+                {fileTab && <FileTab />}
+                {storyTab && <StoryTab />}
+            </div>
         </Layout>
     )
 }

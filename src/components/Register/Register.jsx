@@ -91,7 +91,6 @@ const Register = () => {
         if (firstName !== "" && lastName !== "" && userName !== "" && email !== "" && password !== "" && confirmPassword !== "") {
             console.log(!firstNameValidate, !lastNameVal, !emailVal, !passwordVal, !confirmPassword);
             if (!firstNameValidate && !lastNameVal && !emailVal && !passwordVal && confirmPassword) {
-                console.log("helo");
                 let data = await signupApi(signupData)
                 if (data?.userNameExist) {
                     setUserNameExist(true)
@@ -130,7 +129,7 @@ const Register = () => {
                         {lastNameVal && <p className="text-red-600 text-sm">special characters not allowed</p>}
                     </div>
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
-                        <label>username</label>
+                        <label>Username</label>
                         <input value={userName} onChange={userNameChange} className={userNameVal ? notValid : valid} type="text" />
                         {userNameVal && <p className="text-red-600 text-sm">Username exist..!</p>}
                         {userNameExist && <p className="text-red-600 text-sm text-center">This username id Exist</p>}
@@ -148,7 +147,7 @@ const Register = () => {
                     </div>
 
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
-                        <label>Conform Password</label>
+                        <label>Confirm Password</label>
                         <input value={confirmPassword} onChange={confirmPasswordChange} className={confirmPasswordVal ? notValid : valid} type="text" />
                         {confirmPasswordVal && <p className="text-red-600 text-sm">Not Matching</p>}
                     </div>

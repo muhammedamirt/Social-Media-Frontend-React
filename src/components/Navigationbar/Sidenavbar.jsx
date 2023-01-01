@@ -8,7 +8,7 @@ const Sidebar = () => {
     const inActiveElement = 'flex md:gap-1 md:gap-3 py-3 text-sm md:text-md hover:bg-heavy-metal-100 md:-mx-10 px-6 md:px-10 rounded-md transition-all hover:scale-110'
     return (
         <Card>
-            <div className="px-4 py-2 flex gap-4 justify-between md:block">
+            <div className="px-4 py-2 flex justify-between md:block">
                 <h2 className="text-heavy-metal-800 font-bold mb-3 hidden md:block">Navigation</h2>
                 <Link to={'/'}>
                     <p className={location?.pathname === "/" ? activeElement : inActiveElement}>
@@ -18,20 +18,21 @@ const Sidebar = () => {
                         <span className="hidden md:block">Home</span>
                     </p>
                 </Link>
-                <Link to={"/create"}>
-                    <p className={location?.pathname === "/create" ? activeElement : inActiveElement}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span className="hidden md:block">Create</span>
-                    </p>
-                </Link>
+
                 <Link to={'/messages'}>
                     <p className={location?.pathname === "/messages" ? activeElement : inActiveElement}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3" />
                         </svg>
                         <span className="hidden md:block">Messages</span>
+                    </p>
+                </Link>
+                <Link to={"/create"}>
+                    <p className={location?.pathname === "/create" ? activeElement : inActiveElement}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="hidden md:block">Create</span>
                     </p>
                 </Link>
                 <Link to={'/notifications'}>
