@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Card } from "../Card/Card"
-import {routeChanged} from '../../redux/topLoadingBar'
+import { routeChanged } from '../../redux/topLoadingBar'
 import CameraTab from "../CreatePostTabs/CameraTab"
 import FileTab from "../CreatePostTabs/FileTab"
 import StoryTab from "../CreatePostTabs/StoryTab"
 import Layout from "../Layout/Layout"
+import VideoTab from "../CreatePostTabs/VideoTab"
 
 
 const CreatePost = () => {
@@ -14,21 +15,32 @@ const CreatePost = () => {
     const [cameraTab, setCameraTab] = useState(true)
     const [fileTab, setFileTab] = useState(false)
     const [storyTab, setStoryTab] = useState(false)
+    const [videoTab, setVideoTab] = useState(false)
     const handleCameraTab = () => {
+        setVideoTab(false)
         setStoryTab(false)
         setFileTab(false)
         setCameraTab(true)
     }
     const handleFileTab = () => {
+        setVideoTab(false)
         setStoryTab(false)
         setCameraTab(false)
         setFileTab(true)
     }
 
     const handleStoryTab = () => {
+        setVideoTab(false)
         setCameraTab(false)
         setFileTab(false)
         setStoryTab(true)
+    }
+
+    const handleVideoTab = () => {
+        setVideoTab(true)
+        setCameraTab(false)
+        setFileTab(false)
+        setStoryTab(false)
     }
 
     const activeTab = "flex gap-2 bg-heavy-metal-200 rounded-t py-2 px-3 border-b-4 border-heavy-metal-500 font-bold cursor-pointer"
@@ -49,7 +61,13 @@ const CreatePost = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 13.5H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                         </svg>
 
-                        <p>File</p>
+                        <p>Photos</p>
+                    </span>
+                    <span className={videoTab ? activeTab : inActiveTab} onClick={handleVideoTab}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        <p>Videos</p>
                     </span>
                     <span className={storyTab ? activeTab : inActiveTab} onClick={handleStoryTab}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -64,6 +82,7 @@ const CreatePost = () => {
             <div>
                 {cameraTab && <CameraTab />}
                 {fileTab && <FileTab />}
+                {videoTab && <VideoTab />}
                 {storyTab && <StoryTab />}
             </div>
         </Layout>

@@ -1,12 +1,51 @@
 import { useState } from "react"
 import { Card } from "../Card/Card"
+// import { sendFileToBack } from '../../api/user'
+// import s3FileUpload from 'react-s3'
+// window.Buffer = window.Buffer || require("buffer").Buffer;
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
+
+const S3_BUCKET = 'woulddosocialmedia';
+const REGION = 'ap-south-1';
+const ACCESS_KEY = 'AKIA6O7PRWWQJQUMHPNJ';
+const SECRET_ACCESS_KEY = 'nnizmzW6Y28bR0tnci2M';
+
+// const config = {
+//     bucketName: S3_BUCKET,
+//     region: REGION,
+//     accessKeyId: ACCESS_KEY,
+//     secretAccessKey: SECRET_ACCESS_KEY,
+// }
+
 
 const FileTab = () => {
-    const [image, setImage] = useState('')
-    
-  return (
-    <div>
-        <Card>
+
+
+    const [fileUpload, setFileUpload] = useState('')
+    const handleUpload = async () => {
+        const client = new S3Client({
+            region: REGION,
+            credentials: {
+                accessKeyId: ACCESS_KEY,
+                secretAccessKey: SECRET_ACCESS_KEY,
+            },
+        });
+
+        const params = {
+            Bucket:S3_BUCKET,
+            Key: "dhsafhsadhfsfhsfhsa",
+            Body: fileUpload /** object body */,
+        };
+
+        const command = new PutObjectCommand(params);
+        const data = await client.send(command);
+        console.log(data);
+    }
+
+    return (
+        <div>
+            <Card>
                 <div className="flex items-center justify-center w-full">
                     <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -14,18 +53,24 @@ const FileTab = () => {
                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                         </div>
-                        <input id="dropzone-file" type="file" className="hidden" />
+                        <input id="dropzone-file" type="file" className="hidden" multipart onChange={(e) => { setFileUpload(e.target.files[0]) }} />
                     </label>
                 </div>
-                <button className="w-full bg-heavy-metal-800 text-white py-3 rounded-lg mt-1">Upload</button>
+
             </Card>
-            <Card>
-                <div className={image !== "" ? "w-4/5 justify-center ml-14" : "w-4/5 justify-center ml-14 hidden"}>
-                    <img src="https://pixlr.com/images/index/remove-bg.webp" alt="" />
-                </div>
-            </Card>
-    </div>
-  )
+            <div className={fileUpload ? "block" : "hidden"}>
+                <Card>
+                    <div className={fileUpload ? "w-4/5 justify-center ml-14" : "w-4/5 justify-center ml-14 hidden"}>
+                        <img src='#' alt="SelectedImage" />
+                    </div>
+                    <div className="border mt-5 rounded-lg">
+                        <textarea placeholder="Write A Caption to your Photo" className='w-full rounded-xl border-heavy-metal-700 border-2'></textarea>
+                    </div>
+                    <button className="w-full bg-heavy-metal-500 text-white py-3 rounded-lg mt-1 hover:bg-heavy-metal-800" onClick={handleUpload}>Upload</button>
+                </Card>
+            </div>
+        </div>
+    )
 }
 
 export default FileTab

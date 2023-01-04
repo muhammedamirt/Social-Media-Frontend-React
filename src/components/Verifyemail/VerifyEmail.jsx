@@ -11,7 +11,8 @@ const VerifyEmail = () => {
     const handleVerifyEmail = (e) => {
         e.preventDefault()
         let data = verifyEmailFunc(id, token)
-        navigate('/')
+        console.log(data);
+        navigate('/login')
     }
     return (
         <div className="overflow-hidden h-screen w-full sm:container">

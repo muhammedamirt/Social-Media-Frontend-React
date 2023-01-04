@@ -6,13 +6,27 @@ import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
 import VerifyEmail from "./components/Verifyemail/VerifyEmail";
 import LoadingBar from 'react-top-loading-bar'
-import {useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Settings from "./pages/Settings/Settings";
 import Notification from "./pages/Notifications/Notification";
 import CreatePost from "./components/CreatePost/CreatePost";
+import MyProfile from "./pages/myprofile/MyProfile";
+import { useEffect } from "react";
+import { userAddDetails } from './redux/authSliceUser'
+
 
 
 function App() {
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(userAddDetails({ token: localStorage.getItem('userToken') }));
+  }, []);
+
+ const user = useSelector((state) => state?.user?.userToken);
+ console.log(user,"=============");
+
+
   const { progress } = useSelector((state) => state.loader)
   return (<div>
 
@@ -22,8 +36,10 @@ function App() {
       height={3}
       loaderSpeed={1000}
     />
+
+
     <Routes>
-      <Route path="/" element={<Home  />} exact />
+      <Route path="/" element={<Home />} exact />
       <Route path="/login" element={<Login />} exact />
       <Route path="/register" element={<Register />} exact />
       <Route path="/profile" element={<Profile />} exact />
@@ -31,6 +47,7 @@ function App() {
       <Route path="/settings" element={<Settings />} />
       <Route path="/notifications" element={<Notification />} />
       <Route path="/create" element={<CreatePost />} />
+      <Route path="/myprofile" element={<MyProfile />} />
     </Routes>
   </div>);
 }

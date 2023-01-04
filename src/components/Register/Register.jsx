@@ -41,7 +41,8 @@ const Register = () => {
         } else {
             setEmailVal(false)
         }
-        if (password < 8 && password !== "") {
+        if (password.length < 8 && password !== "") {
+            
             setPasswordVal(true)
         } else {
             setPasswordVal(false)
