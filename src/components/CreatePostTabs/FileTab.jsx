@@ -1,16 +1,20 @@
 import { useState } from "react"
+import S3 from "aws-sdk/clients/s3";
 import { Card } from "../Card/Card"
+import { S3_BUCKET,accessKeyId,region,secretAccessKey } from "../../credentials"; 
 // import { sendFileToBack } from '../../api/user'
-// import s3FileUpload from 'react-s3'
-// window.Buffer = window.Buffer || require("buffer").Buffer;
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import s3FileUpload from 'react-s3'
+// import { Buffer } from 'buffer';
+// Buffer.from('anything', 'base64');
+window.Buffer = window.Buffer || require("buffer").Buffer;
+// import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 
-const S3_BUCKET = 'woulddosocialmedia';
-const REGION = 'ap-south-1';
-const ACCESS_KEY = 'AKIA6O7PRWWQJQUMHPNJ';
-const SECRET_ACCESS_KEY = 'nnizmzW6Y28bR0tnci2M';
-
+const s3 = new S3({
+    region,
+    accessKeyId,
+    secretAccessKey
+})
 // const config = {
 //     bucketName: S3_BUCKET,
 //     region: REGION,
@@ -24,23 +28,39 @@ const FileTab = () => {
 
     const [fileUpload, setFileUpload] = useState('')
     const handleUpload = async () => {
-        const client = new S3Client({
-            region: REGION,
-            credentials: {
-                accessKeyId: ACCESS_KEY,
-                secretAccessKey: SECRET_ACCESS_KEY,
-            },
-        });
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+            const result = e.target.result
+            console.log(result);
+            const uploadParams = {
+                Bucket: S3_BUCKET,
+                Key:fileUpload.name,
+                Body:result
+            }
+            s3.upload(uploadParams).promise().then((res)=>console.log(res))
+            // console.log(awsRes);
+        }
+        reader.readAsArrayBuffer(fileUpload)
+        // const config = {
+        //     bucketName: S3_BUCKET,
+        //     region: REGION,
+        //     accessKeyId: ACCESS_KEY,
+        //     secretAccessKey: SECRET_ACCESS_KEY
+        // }
 
-        const params = {
-            Bucket:S3_BUCKET,
-            Key: "dhsafhsadhfsfhsfhsa",
-            Body: fileUpload /** object body */,
-        };
+        // s3FileUpload.uploadFile(fileUpload, config)
+        //     .then(data => console.log(data))
+        //     // .catch(err => console.error(err))
 
-        const command = new PutObjectCommand(params);
-        const data = await client.send(command);
-        console.log(data);
+        // const params = {
+        //     Bucket:S3_BUCKET,
+        //     Key: fileUpload.name,
+        //     Body: fileUpload 
+        // };
+        // console.log(params,'====');
+        // const command = new PutObjectCommand(params);
+        // const data = await client.send(command);
+        // console.log(data);
     }
 
     return (
@@ -61,7 +81,7 @@ const FileTab = () => {
             <div className={fileUpload ? "block" : "hidden"}>
                 <Card>
                     <div className={fileUpload ? "w-4/5 justify-center ml-14" : "w-4/5 justify-center ml-14 hidden"}>
-                        <img src='#' alt="SelectedImage" />
+                        <img src='https://woulddosocialmedia.s3.ap-south-1.amazonaws.com/amir%20img%201.jpeg' alt="SelectedImage" />
                     </div>
                     <div className="border mt-5 rounded-lg">
                         <textarea placeholder="Write A Caption to your Photo" className='w-full rounded-xl border-heavy-metal-700 border-2'></textarea>

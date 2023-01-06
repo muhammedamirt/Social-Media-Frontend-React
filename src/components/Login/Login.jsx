@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { loginApi } from '../../api/user'
 import { routeChanged } from "../../redux/topLoadingBar"
-import {userAddDetails,userLogout} from '../../redux/authSliceUser'
+import {userAddDetails} from '../../redux/authSliceUser'
 const Login = () => {
     const dispatch = useDispatch()
     dispatch(routeChanged())
@@ -33,7 +33,8 @@ const Login = () => {
             } else if (data?.success) {
                 console.log(data?.token);
                 localStorage.setItem('userToken', data?.token)
-                dispatch(userAddDetails({token:data?.token}))
+                localStorage.setItem('id', data?.id)
+                dispatch(userAddDetails({token:data?.token,id:data?.id}))
                 navigate('/')
             }
         } else {

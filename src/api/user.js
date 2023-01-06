@@ -9,19 +9,20 @@ export const loginApi = async (email, password) => {
 
 export const signupApi = async (signupData) => {
     let { data } = await API.post('/register', signupData, { withCredentials: true })
-    console.log(data);
     return data;
 }
 
 export const verifyEmailFunc = async (id, token) => {
-    console.log(id, token);
     let { data } = await API.get(`/verifySignup/${id}/${token}`, { withCredentials: true })
-    console.log(data);
+    return data;
+}
+
+export const userDataToProfile = async (userId) => {
+    let  {data}  = await API.get(`/getUserData/${userId}`)
     return data;
 }
 
 export const sendFileToBack = async (imageFile) => {
-    console.log(imageFile);
     let { data } = await API.post('/imageUpload', imageFile, {
         headers: {
             "Content-Type": "multipart/form-data",

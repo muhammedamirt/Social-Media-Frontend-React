@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const Header = () => {
     return (
-        <div className="flex justify-between bg-heavy-metal-800 shadow-md w-full h-16 shadow-heavy-metal-400 p-4 mb-5 sticky top-0">
+        <div className="flex justify-between bg-heavy-metal-800 shadow-md w-full h-16 shadow-heavy-metal-400 p-4 mb-5 sticky top-0 z-50">
             <div>
                 <h2 className="ml-5 font-bold text-snow-drift-200 text-2xl">Social Media</h2>
             </div>
@@ -16,6 +16,9 @@ const Header = () => {
                     </Link>
 
                 </span>
+                {/* <button className="hover:bg-snow-drift-50 px-6 rounded-xl font-bold text-md text-snow-drift-50 border-white border-4 hover:text-heavy-metal-800">
+                     Login
+                </button> */}
                 <Link to={'/myprofile'}>
                     <div className='w-8 rounded-full border-white border overflow-hidden shadow-sm shadow-gray-500'>
                         <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />

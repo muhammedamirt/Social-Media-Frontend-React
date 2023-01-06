@@ -4,15 +4,17 @@ const userAuth = createSlice({
   name: 'user',
   initialState: {
     userToken: '',
+    userId:''
   },
   reducers: {
     userAddDetails(state, actions) {
-        console.log(actions.payload,'----------------------');
       const newItem = actions.payload;
       state.userToken = newItem.token;
+      state.userId = newItem.id;
     },
     userLogout(state) {
       state.userToken = '';
+      state.userId = '';      
     },
   },
 });

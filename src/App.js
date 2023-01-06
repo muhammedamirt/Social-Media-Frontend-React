@@ -24,7 +24,6 @@ function App() {
   }, []);
 
  const user = useSelector((state) => state?.user?.userToken);
- console.log(user,"=============");
 
 
   const { progress } = useSelector((state) => state.loader)

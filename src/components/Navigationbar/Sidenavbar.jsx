@@ -6,9 +6,8 @@ const Sidebar = () => {
     const activeElement = 'flex md:gap-1 md:gap-3 py-3 text-sm md:text-md bg-heavy-metal-300 md:-mx-10 px-6 md:px-10 rounded-md  shadow-heavy-metal-100'
     const inActiveElement = 'flex md:gap-1 md:gap-3 py-3 text-sm md:text-md hover:bg-heavy-metal-100 md:-mx-10 px-6 md:px-10 rounded-md transition-all hover:scale-110'
     return (
-        <div>
             <Card>
-                <div className="px-4 py-2 flex justify-between md:block">
+                <div className="md:px-4 md:py-2 flex justify-between w-full md:block">
                     <h2 className="text-heavy-metal-800 font-bold mb-3 hidden md:block">Navigation</h2>
                     <Link to={'/'}>
                         <p className={location?.pathname === "/" ? activeElement : inActiveElement}>
@@ -52,7 +51,6 @@ const Sidebar = () => {
                     </Link>
                 </div>
             </Card>
-        </div>
     )
 }
 
