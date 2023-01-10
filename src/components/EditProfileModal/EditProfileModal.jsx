@@ -1,18 +1,24 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
+// import { useSelector } from "react-redux"
+import { fetchOneUserProfile } from "../../api/user"
 
 
 const EditProfileModal = ({ visible, onClose }) => {
+  const profileRef = useRef(null)
+  const coverRef = useRef(null)
+  // const [changedData, setChangedData] = useState({})
+  const [editProfileData, setEditProfileData] = useState({})
+  // const userData = useSelector((state) => state.userData.userData)
+  const userId = localStorage.getItem('id')
+  const fetchUserProfile = async () => {
+    const data = await fetchOneUserProfile(userId)
+    setEditProfileData(data)
+  }
+  useEffect(() => {
+    fetchUserProfile()
+  }, [])
   return (
     <>
-      {/* <button
-        className="bg-pink-500 text-white active:bg-pink-600 font-bold
-         uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline
-         -none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        Open regular modal
-      </button> */}
       {visible ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
@@ -39,26 +45,27 @@ const EditProfileModal = ({ visible, onClose }) => {
                   <div className="mt-2">
                     <div className="flex">
                       <h1 className="font-bold text-2xl">Profile photo</h1>
-                      <button className="text-lg text-blue-600 ml-auto">
+                      <button onClick={() => profileRef.current.click()} className="text-lg text-blue-600 ml-auto">
                         edit
                       </button>
+                      <input name="cover_img" ref={profileRef} hidden type="file" />
                     </div>
                     <div className="flex justify-center mt-2">
-                      <div className='w-36 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                        <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
+                      <div className='w-36 h-36 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
+                        <img src={editProfileData?.picture} alt="avatars" />
                       </div>
                     </div>
                   </div>
                   <div className="mt-2">
                     <div className="flex">
-                      <h1 className="font-bold text-2xl">Conver photo</h1>
-                      <button className="text-lg text-blue-600 ml-auto">
+                      <h1 className="font-bold text-2xl">Cover photo</h1>
+                      <button onClick={() => coverRef.current.click()} className="text-lg text-blue-600 ml-auto">
                         edit
                       </button>
+                      <input name="cover_img" ref={coverRef} hidden type="file" />
                     </div>
                     <div className="h-36 overflow-hidden flex justify-center mt-4 items-center">
-                      {/* <img src={user.cover_img} alt="" /> */}
-                      <img src="https://www.lonelyplanet.fr/sites/lonelyplanet/files/styles/manual_crop/public/media/destination/slider/mobile/gettyrf_461358497.jpg?itok=m-6c7QZ0" alt="cover" />
+                      <img src={editProfileData?.cover} alt="cover" />
                     </div>
                   </div>
                   <div className="mt-4">
@@ -68,14 +75,21 @@ const EditProfileModal = ({ visible, onClose }) => {
                     <div className="mt-2 gap-2 flex justify-between">
                       <input
                         type="Text"
+                        placeholder="first_name"
+                        value={editProfileData?.first_name}
+                        // onChange={(e)=>setEditProfileData({first_name:e.target.value})}
+                        className="text-center w-1/2 h-8 rounded-md bg-gray-100"
+                      />
+                      <input
+                        type="Text"
                         placeholder="Full Name"
-                        // value={user.dob}
+                        value={editProfileData?.last_name}
                         className="text-center w-1/2 h-8 rounded-md bg-gray-100"
                       />
                       <input
                         type="text"
                         placeholder="Username"
-                        // value={user.place}
+                        value={editProfileData?.username}
                         className="text-center w-1/2 h-8 rounded-md bg-gray-100"
                       />
                     </div>
@@ -83,13 +97,13 @@ const EditProfileModal = ({ visible, onClose }) => {
                       <input
                         type="Text"
                         placeholder="country..."
-                        // value={user.dob}
+                        value={editProfileData?.country}
                         className="text-center w-1/2 h-8 rounded-md bg-gray-100"
                       />
                       <input
                         type="text"
                         placeholder="place . . ."
-                        // value={user.place}
+                        value={editProfileData?.place}
                         className="text-center w-1/2 h-8 rounded-md bg-gray-100"
                       />
                     </div>
@@ -97,23 +111,9 @@ const EditProfileModal = ({ visible, onClose }) => {
                       <input
                         type="text"
                         placeholder="About . . ."
-                        // value={user.bio}
+                        value={editProfileData?.about}
                         className="text-center w-full h-8 rounded-md bg-gray-100"
                       />
-                    </div>
-                    <div className="mt-2">
-                      {/* <select
-                        id="countries"
-                        className="text-center bg-gray-50 border border-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      >
-                        <option selected>{user.relationship}</option>
-                        <option value="single">Single</option>
-                        <option value="In a Relationship">
-                          In a Relationship
-                        </option>
-                        <option value="Enagaged">Engaged</option>
-                        <option value="Married">Married</option>
-                      </select> */}
                     </div>
                   </div>
                 </div>

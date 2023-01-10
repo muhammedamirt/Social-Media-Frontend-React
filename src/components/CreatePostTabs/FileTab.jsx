@@ -1,68 +1,45 @@
 import { useState } from "react"
 import S3 from "aws-sdk/clients/s3";
 import { Card } from "../Card/Card"
-import { S3_BUCKET,accessKeyId,region,secretAccessKey } from "../../credentials"; 
-// import { sendFileToBack } from '../../api/user'
-import s3FileUpload from 'react-s3'
-// import { Buffer } from 'buffer';
-// Buffer.from('anything', 'base64');
+import { createImagePost } from "../../api/user";
+import { useNavigate } from "react-router-dom";
 window.Buffer = window.Buffer || require("buffer").Buffer;
-// import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
+const S3_BUCKET = process.env.REACT_APP_NAME
+const accessKeyId = process.env.REACT_APP_ACCESS_KEY_ID
+const region = process.env.REACT_APP_REGION
+const secretAccessKey = process.env.REACT_APP_SECRET_ACCESS_KEY
 
 const s3 = new S3({
     region,
     accessKeyId,
     secretAccessKey
 })
-// const config = {
-//     bucketName: S3_BUCKET,
-//     region: REGION,
-//     accessKeyId: ACCESS_KEY,
-//     secretAccessKey: SECRET_ACCESS_KEY,
-// }
-
-
 const FileTab = () => {
-
-
     const [fileUpload, setFileUpload] = useState('')
+    const [captions, setCaptions] = useState('')
+    const navigate = useNavigate()
+    const userId = localStorage.getItem('id')
     const handleUpload = async () => {
         const reader = new FileReader()
+        reader.readAsArrayBuffer(fileUpload)
         reader.onload = async (e) => {
             const result = e.target.result
-            console.log(result);
             const uploadParams = {
                 Bucket: S3_BUCKET,
-                Key:fileUpload.name,
-                Body:result
+                Key: fileUpload.name,
+                Body: result
             }
-            s3.upload(uploadParams).promise().then((res)=>console.log(res))
-            // console.log(awsRes);
+            s3.upload(uploadParams).promise().then(async (res) => {
+                const data = await createImagePost({ image: res.Location, captions }, userId)
+                if (data.status) {
+                    navigate('/myprofile')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
         }
-        reader.readAsArrayBuffer(fileUpload)
-        // const config = {
-        //     bucketName: S3_BUCKET,
-        //     region: REGION,
-        //     accessKeyId: ACCESS_KEY,
-        //     secretAccessKey: SECRET_ACCESS_KEY
-        // }
-
-        // s3FileUpload.uploadFile(fileUpload, config)
-        //     .then(data => console.log(data))
-        //     // .catch(err => console.error(err))
-
-        // const params = {
-        //     Bucket:S3_BUCKET,
-        //     Key: fileUpload.name,
-        //     Body: fileUpload 
-        // };
-        // console.log(params,'====');
-        // const command = new PutObjectCommand(params);
-        // const data = await client.send(command);
-        // console.log(data);
     }
-
     return (
         <div>
             <Card>
@@ -80,11 +57,15 @@ const FileTab = () => {
             </Card>
             <div className={fileUpload ? "block" : "hidden"}>
                 <Card>
-                    <div className={fileUpload ? "w-4/5 justify-center ml-14" : "w-4/5 justify-center ml-14 hidden"}>
-                        <img src='https://woulddosocialmedia.s3.ap-south-1.amazonaws.com/amir%20img%201.jpeg' alt="SelectedImage" />
-                    </div>
+                    {fileUpload ?
+                        <div>
+                            <div className={fileUpload ? "w-4/5 justify-center md:ml-14" : "w-4/5 justify-center md:ml-14 hidden"}>
+                                <img src={URL.createObjectURL(fileUpload)} alt="SelectedImage" />
+                            </div>
+                        </div> : null
+                    }
                     <div className="border mt-5 rounded-lg">
-                        <textarea placeholder="Write A Caption to your Photo" className='w-full rounded-xl border-heavy-metal-700 border-2'></textarea>
+                        <textarea value={captions} onChange={(e) => setCaptions(e.target.value)} placeholder="Write A Caption to your Photo" className='w-full rounded-xl border-heavy-metal-700 border-2'></textarea>
                     </div>
                     <button className="w-full bg-heavy-metal-500 text-white py-3 rounded-lg mt-1 hover:bg-heavy-metal-800" onClick={handleUpload}>Upload</button>
                 </Card>

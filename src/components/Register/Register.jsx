@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { signupApi } from '../../api/user'
 import { routeChanged } from "../../redux/topLoadingBar"
+import PasswordStrengthBar from 'react-password-strength-bar';
+import PasswordChecklist from "react-password-checklist"
 
 const Register = () => {
     const dispatch = useDispatch()
@@ -42,7 +44,7 @@ const Register = () => {
             setEmailVal(false)
         }
         if (password.length < 8 && password !== "") {
-            
+
             setPasswordVal(true)
         } else {
             setPasswordVal(false)
@@ -144,12 +146,21 @@ const Register = () => {
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>Password</label>
                         <input value={password} onChange={passwordChange} className={passwordVal ? notValid : valid} type="text" />
+                        
+                        {password !== '' ? <PasswordStrengthBar className="mt-1" password={password} /> : null}
                         {passwordVal && <p className="text-red-600 text-sm">Minimum 8 characters</p>}
                     </div>
 
                     <div className="flex flex-col font-semibold text-heavy-metal-900 py-2 ">
                         <label>Confirm Password</label>
                         <input value={confirmPassword} onChange={confirmPasswordChange} className={confirmPasswordVal ? notValid : valid} type="text" />
+                        {/* <PasswordChecklist
+                            rules={["minLength", "specialChar", "number", "capital", "match"]}
+                            minLength={5}
+                            value={password}
+                            valueAgain={confirmPassword}
+                            onChange={(isValid) => { }}
+                        /> */}
                         {confirmPasswordVal && <p className="text-red-600 text-sm">Not Matching</p>}
                     </div>
                     <div className="flex justify-center">

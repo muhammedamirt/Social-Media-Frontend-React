@@ -9,7 +9,6 @@ const ProtectedRoute = (props) => {
     const getUser = () => {
         dispatch(userAddDetails({ token: localStorage.getItem('userToken') }))
     }
-
     useEffect(() => {
         getUser()
     })

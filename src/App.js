@@ -13,6 +13,9 @@ import CreatePost from "./components/CreatePost/CreatePost";
 import MyProfile from "./pages/myprofile/MyProfile";
 import { useEffect } from "react";
 import { userAddDetails } from './redux/authSliceUser'
+import Chat from "./pages/Chat/Chat";
+import Search from "./pages/Search/Search";
+import Message from "./pages/Chat/Message";
 
 
 
@@ -41,12 +44,15 @@ function App() {
       <Route path="/" element={<Home />} exact />
       <Route path="/login" element={<Login />} exact />
       <Route path="/register" element={<Register />} exact />
-      <Route path="/profile" element={<Profile />} exact />
+      <Route path="/profile/:userId" element={<Profile />} exact />
       <Route path="/:id/Verify/:token" element={<VerifyEmail />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/notifications" element={<Notification />} />
       <Route path="/create" element={<CreatePost />} />
       <Route path="/myprofile" element={<MyProfile />} />
+      <Route path="/chats" element={<Chat />} />
+      <Route path="/message" element={<Message />} />
+      <Route path="/search" element={<Search />} />
     </Routes>
   </div>);
 }

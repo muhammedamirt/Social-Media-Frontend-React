@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Layout from "../../components/Layout/Layout"
 import { Card } from "../../components/Card/Card"
-import { userDataToProfile } from '../../api/user'
+import { fetchOneUserProfile, userDataToProfile } from '../../api/user'
 import { useDispatch, useSelector } from "react-redux"
 import { routeChanged } from '../../redux/topLoadingBar'
 import ProtectedRoute from "../../components/ProtectedRout/ProtectedRoute"
@@ -23,7 +23,19 @@ const MyProfile = () => {
     const [followingTab, setFollowingTab] = useState(false)
     const [followersTab, setFollowersTab] = useState(false)
     const [aboutTab, setAboutTab] = useState(true)
-    const userData = useSelector((state) => state.userData.userData)
+    const [userData, setUserData] = useState(null)
+    // const userData = useSelector((state) => state.userData.userData)
+    
+    const userId = localStorage.getItem('id')
+    const fetchUserProfile = async () => {
+        const data = await fetchOneUserProfile(userId)
+        setUserData(data)
+    } 
+
+    useEffect(() => {
+        fetchUserProfile()
+    }, [])
+
 
     const handleClose = () =>{
         setShowModal(false)
@@ -91,7 +103,7 @@ const MyProfile = () => {
                     </div>
                     <div className="flex justify-between px-40 mt-10 gap-4">
                         <span onClick={managePostTab} className="bg-snow-drift-50 rounded-lg shadow-md w-28 shadow-heavy-metal-800 px-5 py-1 cursor-pointer hover:bg-snow-drift-300">
-                            <p className="text-lg font-bold text-center">0</p>
+                            <p className="text-lg font-bold text-center">{userData?.Posts?.length}</p>
                             <p className="text-center">Posts</p>
                         </span>
                         <span onClick={manageFollowersTab} className="bg-snow-drift-50 rounded-lg shadow-md w-28 shadow-heavy-metal-800 px-5 py-1 cursor-pointer hover:bg-snow-drift-300">

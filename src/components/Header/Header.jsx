@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom"
+import { useSelector } from 'react-redux'
 
 const Header = () => {
+    const userData = useSelector((state) => state.userData.userData)
     return (
         <div className="flex justify-between bg-heavy-metal-800 shadow-md w-full h-16 shadow-heavy-metal-400 p-4 mb-5 sticky top-0 z-50">
             <div>
@@ -20,9 +22,10 @@ const Header = () => {
                      Login
                 </button> */}
                 <Link to={'/myprofile'}>
-                    <div className='w-8 rounded-full border-white border overflow-hidden shadow-sm shadow-gray-500'>
-                        <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
+                    <div className='w-8 h-8 rounded-full border-white border overflow-hidden shadow-sm shadow-gray-500'>
+                        <img src={userData?.picture} alt="avatars" />
                     </div>
+                        {/* <p>@{userData?.username}</p> */}
                 </Link>
             </div>
         </div>

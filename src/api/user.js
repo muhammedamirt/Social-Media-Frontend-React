@@ -18,15 +18,41 @@ export const verifyEmailFunc = async (id, token) => {
 }
 
 export const userDataToProfile = async (userId) => {
-    let  {data}  = await API.get(`/getUserData/${userId}`)
+    let { data } = await API.get(`/getUserData/${userId}`, {
+        withCredentials: true,
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+    })
     return data;
 }
 
-export const sendFileToBack = async (imageFile) => {
-    let { data } = await API.post('/imageUpload', imageFile, {
+export const fetchUserPosts = async (userId) => {
+    let { data } = await API.get(`/getUserPosts/${userId}`)
+    return data;
+}
+
+export const createImagePost = async (imageFileData, userId) => {
+    let { data } = await API.post(`/createImagePost/${userId}`, imageFileData)
+    return data;
+}
+
+export const fetchFollowersPosts = async (userId) => {
+    let { data } = await API.get(`/fetchFollowersPosts/${userId}`,{
+        withCredentials: true,
         headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+    })
+    return data;
+}
+
+export const fetchOneUserProfile = async (userId) => {
+    let { data } = await API.get(`/fetchSpecificUser/${userId}`,{
+        withCredentials: true,
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
     })
     return data;
 }
