@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card } from '../../components/Card/Card'
 import Layout from '../../components/Layout/Layout'
 import SearchBar from '../../components/SearchItems/SearchBar'
 import SearchResults from '../../components/SearchItems/SearchResults'

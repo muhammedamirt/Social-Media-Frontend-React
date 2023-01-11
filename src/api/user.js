@@ -56,3 +56,13 @@ export const fetchOneUserProfile = async (userId) => {
     })
     return data;
 }
+
+export const handleLikePost =async (postId,userId)=>{
+    let { data } = await API.get(`/LikePost/${postId}/${userId}`,{
+        withCredentials: true,
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+    })
+    return data;
+}

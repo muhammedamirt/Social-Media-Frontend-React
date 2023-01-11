@@ -2,17 +2,26 @@ import { useEffect, useState } from "react";
 import { Card } from "../Card/Card"
 import { Link } from 'react-router-dom'
 import OutsideClickHandler from 'react-outside-click-handler';
-import { fetchFollowersPosts } from "../../api/user";
+import { fetchFollowersPosts, handleLikePost } from "../../api/user";
 import Moment from 'react-moment';
 const PostForm = () => {
   const [userPosts, setUserPosts] = useState([])
   const [dropdown, setDropDown] = useState(false)
+  const [likeStatus, setLikeStatus] = useState(false)
 
   const followersPosts = async () => {
     const data = await fetchFollowersPosts()
     setUserPosts(...userPosts, data)
   }
-const currUser = localStorage.getItem("id")
+
+  const handleLikes = (postId) => {
+    setLikeStatus(!likeStatus)
+    const userId = localStorage.getItem('id')
+    const response = handleLikePost(postId, userId)
+    console.log(response);
+  }
+
+  const currUser = localStorage.getItem("id")
   useEffect(() => {
     followersPosts()
   }, [])
@@ -74,14 +83,17 @@ const currUser = localStorage.getItem("id")
                 </div>
                 <div className="mt-2">
                   <div className="rounded-md overflow-hidden">
-                    <img src={post?.image} alt="post" />
+                    <img src='https://cdn.kimkim.com/files/a/images/ef80bf6d27c3b6eb60a534712d60d3604a757b2d/big-e6f8c61e72a89be6dfc9ed5c7c65a562.jpg' alt="post" />
                   </div>
                   <div className="mt-4 flex gap-3">
-                    <button className="flex gap-2 items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                      </svg>
-                      1.2M
+                    <button className="flex gap-2 items-center" onClick={() => handleLikes(post?._id)}>
+                      {likeStatus ?
+                        <span className="text-red-600"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg></span> : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>}
+                      {post?.likes.length}
                     </button>
                     <button className="flex gap-2 items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -97,7 +109,7 @@ const currUser = localStorage.getItem("id")
                     </button>
                   </div>
                   <div>
-                  <Moment className="text-sm text-snow-drift-400" fromNow>{post?.date}</Moment>
+                    <Moment className="text-sm text-snow-drift-400" fromNow>{post?.date}</Moment>
                   </div>
                   <p className="my-1 text-sm">{post?.text}</p>
                   <div className="flex gap-2">

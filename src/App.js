@@ -16,6 +16,7 @@ import { userAddDetails } from './redux/authSliceUser'
 import Chat from "./pages/Chat/Chat";
 import Search from "./pages/Search/Search";
 import Message from "./pages/Chat/Message";
+import ParticlesBg from "./components/ParticlesBg/Particles";
 
 
 
