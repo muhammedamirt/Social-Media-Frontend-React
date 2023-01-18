@@ -29,7 +29,7 @@ const AdminSideBar = () => {
                             <span className="hidden md:block">Dashboard</span>
                         </p>
                     </Link>
-                    <Link to={"/admin"}>
+                    <Link to={"/admin/users"}>
                         <p className={location?.pathname === "/admin/" ? activeElement : inActiveElement}>
                         <Groups2OutlinedIcon/>
                             <span className="hidden md:block">Users</span>

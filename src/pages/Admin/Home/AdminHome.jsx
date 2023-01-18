@@ -9,7 +9,7 @@ import AdminLayout from '../../../components/Admin/Layout/AdminLayout';
 const AdminHome = () => {
 
     return (
-        <div>
+        <div className='w-full'>
             <AdminLayout>
                 <AdminCard>
                     <HomeHead />

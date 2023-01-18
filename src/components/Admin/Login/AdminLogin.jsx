@@ -14,7 +14,7 @@ const AdminLogin = () => {
     const [emailError, setEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
     const [authCommonMessage, setAuthCommonMessage] = useState('')
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     useEffect(() => {
         setEmailValidate(email.includes('@') && email.trim().length > 7)
         setPasswordValid(password.length > 7)

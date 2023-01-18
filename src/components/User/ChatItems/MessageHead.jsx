@@ -1,15 +1,15 @@
 import React from 'react'
 
-const MessageHead = () => {
+const MessageHead = ({user}) => {
     return (
         <div className='bg-heavy-metal-700 w-full rounded-t-md  py-4 px-3'>
             <div className='flex justify-between'>
                 <div className='flex gap-4'>
                     <div className='w-10 h-10 rounded-full overflow-hidden shadow-sm shadow-gray-500 cursor-pointer'>
-                        <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
+                        <img src={user?.picture} alt="avatars" />
                     </div>
                     <div>
-                        <h1 className='font-bold text-snow-drift-50 text-lg'>Christopher</h1>
+                        <h1 className='font-bold text-snow-drift-50 text-lg'>{user?.first_name} {user?.last_name}</h1>
                         <p className='text-sm text-white'>online</p>
                     </div>
                 </div>

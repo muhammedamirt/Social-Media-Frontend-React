@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@aws-sdk/client-s3": "^3.241.0",
+    "@emoji-mart/data": "^1.1.1",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
@@ -16,6 +18,7 @@
     "axios": "^1.2.1",
     "buffer": "^6.0.3",
     "dotenv": "^16.0.3",
+    "emoji-mart": "^5.4.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-animated-heart": "^0.0.7",
@@ -34,6 +37,8 @@
     "react-top-loading-bar": "^2.3.1",
     "react-tsparticles": "^2.7.1",
     "recharts": "^2.2.0",
+    "socket.io-client": "^4.5.4",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tsparticles": "^2.7.1",
     "use-long-press": "^2.0.3",
     "web-vitals": "^2.1.4"

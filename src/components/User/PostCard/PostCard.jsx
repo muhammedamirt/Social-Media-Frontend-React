@@ -7,7 +7,9 @@ import Moment from 'react-moment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Comments from "./Comments";
 import { useLongPress } from 'use-long-press';
-
+import Picker from '@emoji-mart/react'
+import data from '@emoji-mart/data'
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 const PostForm = ({ post }) => {
   const userId = localStorage.getItem('id')
@@ -19,6 +21,7 @@ const PostForm = ({ post }) => {
   const [commentFormVal, setCommentFormVal] = useState(false)
   const [fetchedComments, setFetchedComments] = useState(null)
   const [longPressed, setLongPressed] = useState(false)
+  const [showEmojis, setShowEmojis] = useState(false)
 
   const handleLongPress = () => {
     if (longPressed) {
@@ -28,7 +31,7 @@ const PostForm = ({ post }) => {
   const bind = useLongPress(() => {
     setLongPressed(true)
   });
- 
+
 
   const handleLike = async (postId) => {
     setLikeStatus(!likeStatus)
@@ -47,9 +50,10 @@ const PostForm = ({ post }) => {
       setFetchedComments(commentsData)
     } else {
       setCommentIsOpen(!commentIsOpen)
-    } 
+    }
   }
   const handleSendComment = async (postId) => {
+    setShowEmojis(false)
     const commentData = {
       userId,
       postId,
@@ -57,7 +61,7 @@ const PostForm = ({ post }) => {
     }
     if (comment) {
       if (comment !== "") {
-         await commentPost(commentData)
+        await commentPost(commentData)
         handleCommentClick(postId)
         setComment('')
       } else {
@@ -69,6 +73,7 @@ const PostForm = ({ post }) => {
   }
 
   const commentTexting = (e) => {
+    setCommentIsOpen(false)
     setCommentFormVal(false)
     setComment(e.target.value)
   }
@@ -76,7 +81,7 @@ const PostForm = ({ post }) => {
   return (
     <div>
       <Card>
-        <div className="flex gap-3" key={post?._id}>
+        <div className="flex gap-3 " key={post?._id}>
           <div>
             <div className='w-12 h-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
               <img src={post?.userId?.picture} alt="avatars" />
@@ -94,6 +99,7 @@ const PostForm = ({ post }) => {
             </button>
 
             <OutsideClickHandler onOutsideClick={() => {
+              setShowEmojis(false)
               setDropDown(false)
             }}>
               <div className="relative">
@@ -150,7 +156,7 @@ const PostForm = ({ post }) => {
               </svg>
               {/* {fetchedComments.length} */}
             </button>
-            <button className="flex gap-2 items-center">
+            <button className="flex gap-2 items-center" >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3" />
               </svg>
@@ -167,28 +173,39 @@ const PostForm = ({ post }) => {
                 <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
               </div>
             </div>
-            <div className=" grow mt-4 relative">
-              <textarea value={comment} onChange={commentTexting} className="block rounded-full w-full p-2 h-10 px-4 overflow-hidden" placeholder="Write a comment..."></textarea>
-              <button onClick={() => handleSendComment(post?._id)} className="absolute top-2 right-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-          {commentFormVal &&
-            <div className="flex w-full justify-center">
-              <p className="font-semibold text-red-600 text-sm">Fill the field</p>
-            </div>}
-          {commentIsOpen &&
-            <div {...bind()} onClick={handleLongPress}>
-              <Comments data={fetchedComments} longPressed={longPressed} />
-            </div>
-          }
-        </div>
-      </Card>
+            <div className="flex grow mt-4 relative bg-white rounded-full py-1">
+              <span className="py-2 px-2 text-yellow-500 cursor-pointer" onClick = {() => setShowEmojis(!showEmojis)}>
+              <EmojiEmotionsIcon />
+            </span>
+            <textarea value={comment} onChange={commentTexting} className="block rounded-full w-full p-2 h-10 px-4 overflow-hidden outline-none" placeholder="Write a comment..."></textarea>
 
+            <button onClick={() => handleSendComment(post?._id)} className="absolute top-2 right-3 my-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div className={showEmojis ? 'w-8/12 flex justify-center block absolute ' : 'hidden'}>
+          <Picker data={data} previewPosition="none" onEmojiSelect={
+            (e) => {
+              setComment(comment + e.native)
+            }
+          } />
+        </div>
+        {commentFormVal &&
+          <div className="flex w-full justify-center">
+            <p className="font-semibold text-red-600 text-sm">Fill the field</p>
+          </div>}
+        {commentIsOpen &&
+          <div {...bind()} onClick={handleLongPress}>
+            <Comments data={fetchedComments} longPressed={longPressed} />
+          </div>
+        }
     </div>
+      </Card >
+
+    </div >
   )
 }
 
