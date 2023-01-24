@@ -32,10 +32,7 @@ export const fetchUserPosts = async (userId) => {
     return data;
 }
 
-export const createImagePost = async (imageFileData, userId) => {
-    let { data } = await API.post(`/createImagePost/${userId}`, imageFileData)
-    return data;
-}
+
 
 export const fetchFollowersPosts = async (userId) => {
     let { data } = await API.get(`/fetchFollowersPosts/${userId}`, {
@@ -57,15 +54,7 @@ export const fetchOneUserProfile = async (userId) => {
     return data;
 }
 
-export const handleLikePost = async (postId, userId) => {
-    let { data } = await API.get(`/LikePost/${postId}/${userId}`, {
-        withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
-    })
-    return data;
-}
+
 
 export const followUser = async (userId, myId) => {
     let { data } = await API.get(`/followUser/${userId}/${myId}`, {
@@ -85,23 +74,6 @@ export const editProfile = async (formData) => {
     return data;
 };
 
-export const commentPost = async (formData) => {
-    let { data } = await API.post("/commentToPost", formData, {
-        withCredentials: true
-    })
-    console.log(data, 'response vannu');
-    return data;
-};
-
-export const fetchPostComments = async (postId) => {
-    let { data } = await API.get(`/getComments/${postId}`, {
-        withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
-    })
-    return data;
-}
 
 export const fetchFollowers = async (userId) => {
     let { data } = await API.get(`/getUserFollowers/${userId}`, {
@@ -119,13 +91,40 @@ export const fetchFollowing = async (userId) => {
             Authorization: "Bearer " + localStorage.getItem("userToken"),
         },
     })
-    console.log("response", data);
     return data;
 }
 
 export const uploadProfile = async (formData) => {
     const cloudName = process.env.REACT_APP_COUDINARY_NAME
-    let data =await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, formData)
-    console.log(data, 'response vannu');
+    let data = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, formData)
     return data?.data?.secure_url;
 };
+
+export const userLogoutAPI = async (userId) => {
+    let { data } = await API.put(`/logout/${userId}`, { withCredentials: true })
+    return data
+}
+
+export const searchUserApi = async (searchData) => {
+    const { data } = await API.post('/searchUser', { searchData }, { withCredentials: true })
+    console.log(data, "searchData");
+    return data
+}
+
+export const forgotPasswordAPI = async (email) => {
+    const { data } = await API.put('/forgotPassword', { email }, { withCredentials: true })
+    return data;
+}
+
+export const changePasswordAPI = async (sendData) => {
+    const { data } = await API.put('/changePassword', sendData, { withCredentials: true })
+    return data;
+}
+
+export const fetchSavedPostsAPI = async (userId) => {
+    let { data } = await API.get(`/fetchSavedPosts/${userId}`, {
+        withCredentials: true,
+    })
+    return data;
+}
+

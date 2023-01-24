@@ -60,7 +60,7 @@ const Login = () => {
                 <div className="hidden sm:block py-52 px-20">
                     {/* <img className="w-full h-full object-cover" src="https://media.smallbiztrends.com/2021/01/Active-Social-Media-Presence.png" alt="Background" /> */}
                     <h1 className="text-white text-center text-6xl font-extrabold">Welcome...!</h1>
-                    <p className="text-red-200 text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <p className="text-red-200 text-center">“If you’re looking for the next big thing, and you’re looking where everyone else is, you’re looking in the wrong place.”</p>
                 </div>
                 <div className=" flex flex-col justify-center">
                     <form className="bg-snow-drift-50 max-w-[400px] w-full mx-auto p-8 px-8 rounded-lg shadow-md shadow-heavy-metal-900">
@@ -93,7 +93,9 @@ const Login = () => {
 
                         <div className="flex justify-between py-2">
                             <p className="flex items-center text-xs"><input className="mr-2" type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)} />Remember Me</p>
-                            <p className=" text-xs text-blue-800">Forgot password ?</p>
+                            <Link to='/forgotPassword'>
+                                <p className="cursor-pointer hover:underline text-xs text-blue-800">Forgot password ?</p>
+                            </Link>
                         </div>
                         <div className="flex justify-center py-2">
                             <Link to={'/register'}>

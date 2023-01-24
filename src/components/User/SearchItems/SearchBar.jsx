@@ -1,6 +1,11 @@
 import { Card } from "../Card/Card"
+import { DebounceInput } from 'react-debounce-input';
 
-const SearchBar = () => {
+const SearchBar = ({ setSearchInput }) => {
+    const handleInputChange = (e) => {
+        setSearchInput(e.target.value)
+    }
+
     return (
         <div>
             <Card>
@@ -11,7 +16,13 @@ const SearchBar = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                         </span>
-                        <input placeholder='Search...' className=' w-full border-heavy-metal-900 opacity-50 px-4 border-b-2 border-l-2 outline-none' type="text" />
+                        {/* <input onChange={handleInputChange} placeholder='Search...' className=' w-full border-heavy-metal-900 opacity-50 px-4 border-b-2 border-l-2 outline-none' type="text" /> */}
+                        <DebounceInput
+                        placeholder={'Enter username...'}
+                            className=" w-full border-heavy-metal-900 opacity-50 px-4 border-b-2 border-l-2 outline-none"
+                            minLength={2}
+                            debounceTimeout={1000}
+                            onChange={handleInputChange} />
                     </div>
                 </div>
             </Card>

@@ -10,7 +10,8 @@ const MyFollowing = ({ followingData }) => {
                         <h2 className="font-bold text-xl mb-4">Following</h2>
                     </div>
                     <div>
-                        {followingData.map(following => {
+                        {followingData?.following?.length !== 0 ?
+                        followingData.map(following => {
                             return (
                                 <div className="border-b p-4 -mx-4 border-b-heavy-metal-300 flex justify-between">
                                     <div className="flex gap-3">
@@ -28,7 +29,9 @@ const MyFollowing = ({ followingData }) => {
                                 </div>
                             )
                         })
-                        }
+                       : <p>
+                        No following
+                       </p> }
                     </div>
                 </Card>
             </div>

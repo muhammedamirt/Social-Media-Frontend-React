@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom"
 import { Card } from "../Card/Card"
 
-const SearchResults = () => {
+const SearchResults = ({ searchResults }) => {
     const Active = "font-bold border-b-2 border-heavy-metal-900 border-opacity-30 bg-snow-drift-400 py-1 px-2 rounded-t-lg cursor-pointer"
     const inActive = "font-bold border-b-2 border-heavy-metal-900 border-opacity-30 hover:bg-snow-drift-200 py-1 px-2 hover:border-none rounded-t-lg cursor-pointer"
     return (
@@ -15,50 +16,30 @@ const SearchResults = () => {
                     </div>
                 </div>
                 <div className="px-5">
-                    <div className="border-b p-4 -mx-4 border-b-heavy-metal-300">
-                        <div className="flex gap-3">
-                            <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
+                    {searchResults.length !== 0 ?
+                        searchResults.map((result) => {
+                            return (
+                                <div className="border-b p-4 -mx-4 border-b-heavy-metal-300 hover:bg-heavy-metal-200">
+                                    <Link to={`/profile/${result?._id}`}>
+                                        <div className="flex gap-3">
+                                            <div className='w-12 h-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
+                                                <img src={result?.picture} alt="avatars" />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold text-lg">{result?.username}</h3>
+                                                <h4 className="text-sm leading-3">{result?.first_name} {result?.last_name}</h4>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )
+                        })
+                        :
+                        <div>
+                            <div className="py-10 flex justify-center">
+                               <p className="font-bold text-heavy-metal-800">No User Found</p>
                             </div>
-                            <div>
-                                <h3 className="font-bold text-lg">Crystal</h3>
-                                <h4 className="text-sm leading-3">Username</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="border-b p-4 -mx-4 border-b-heavy-metal-300">
-                        <div className="flex gap-3">
-                            <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-lg">Crystal</h3>
-                                <h4 className="text-sm leading-3">Username</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="border-b p-4 -mx-4 border-b-heavy-metal-300">
-                        <div className="flex gap-3">
-                            <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-lg">Crystal</h3>
-                                <h4 className="text-sm leading-3">Username</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="border-b p-4 -mx-4 border-b-heavy-metal-300">
-                        <div className="flex gap-3">
-                            <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-lg">Crystal</h3>
-                                <h4 className="text-sm leading-3">Username</h4>
-                            </div>
-                        </div>
-                    </div>
+                        </div>}
                 </div>
             </Card>
         </div>

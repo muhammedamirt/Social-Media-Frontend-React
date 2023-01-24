@@ -22,7 +22,7 @@ const Posts = () => {
                 {userPosts.length !== 0 ? userPosts.map((obj) => {
                         return (<div key={obj?.posts?._id}>
                            <Link to={'/viewPosts'}>
-                            <img className="rounded-md overflow-hidden h-44 w-44 flex items-center cursor-pointer object-cover" src={obj?.posts?.image} alt="posts" />
+                            <img className="rounded-md overflow-hidden h-20 w-20 md:h-44 md:w-44 flex items-center cursor-pointer object-cover" src={obj?.posts?.image} alt="posts" />
                             </Link>
                         </div>)
                     }) :

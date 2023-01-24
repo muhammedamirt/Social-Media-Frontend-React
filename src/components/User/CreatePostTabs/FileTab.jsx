@@ -1,7 +1,7 @@
 import { useState } from "react"
 import S3 from "aws-sdk/clients/s3";
 import { Card } from "../Card/Card"
-import { createImagePost } from "../../../api/user";
+import { createImagePost } from "../../../api/postReq";
 import { useNavigate } from "react-router-dom";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -18,17 +18,23 @@ const s3 = new S3({
 const FileTab = () => {
     const [fileUpload, setFileUpload] = useState('')
     const [captions, setCaptions] = useState('')
+    const [imgValidate, setImgValidate] = useState(false)
     const navigate = useNavigate()
     const userId = localStorage.getItem('id')
 
+    const handleInputChange = (e) => {
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        const feed = e.target.files[0]
+        if (!allowedExtensions.exec(feed.name)) {
+        console.log('not a image');
+        setImgValidate(true)
+        } else {
+            setImgValidate(false)
+            setFileUpload(feed);
+          }
+        //  setFileUpload(e.target.files[0])
+        }
 
-    // const fileOnChange = (e) => {
-    //     setFileUpload(e.target.files[0]['type'])
-    //     const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-    //     if (validImageTypes.includes(fileUpload)) {
-    //         console.log('is image');
-    //     }
-    // }
 
     const handleUpload = async () => {
         const reader = new FileReader()
@@ -59,8 +65,9 @@ const FileTab = () => {
                             <svg aria-hidden="true" className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                           {imgValidate&& <p className="text-red-600 font-bold"> choose image</p>}
                         </div>
-                        <input id="dropzone-file" type="file" className="hidden" multipart onChange={(e) => { setFileUpload(e.target.files[0])}} />
+                        <input id="dropzone-file" type="file" className="hidden" multipart onChange={handleInputChange} />
                     </label>
                 </div>
 

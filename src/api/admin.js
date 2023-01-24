@@ -1,0 +1,26 @@
+import axios from "axios";
+
+const API = axios.create({ baseURL: "http://localhost:5000/admin" })
+
+export const adminLoginApi = async (email, password) => {
+    console.log('hello');
+    let { data } = await API.post('/adminLogin', { email, password }, { withCredentials: true })
+    console.log(data);
+    return data;
+}
+
+export const allUsersApi = async () => {
+    let { data } = await API.get('/allUsers', { withCredentials: true })
+    console.log(data,'all users');
+    return data;
+}
+
+// export const adminLogoutAPI= async ()=>{
+//     let { data } = await API.get('/allUsers', { withCredentials: true })
+//     return data
+// }
+
+export const getIsBlockedApi = async (userId)=>{
+    let { data } = await API.put(`/getIsBlocked/${userId}`, { withCredentials: true })
+    return data
+}

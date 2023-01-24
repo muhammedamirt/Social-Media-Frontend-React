@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import UserChat from './UserChat'
 
 
-const ChatContent = ({ chats , setSendMessage,receiveMessage}) => {
+const ChatContent = ({ chats }) => {
     
     // const [currentChat, setCurrentChat] = useState(null)
     return (
@@ -10,7 +10,7 @@ const ChatContent = ({ chats , setSendMessage,receiveMessage}) => {
             <div className='grid  max-h-screen'>
                 {chats.map((chat) => {
                     return (
-                        <UserChat key={chat.id} chat={chat} setSendMessage={setSendMessage} receiveMessage={receiveMessage}/>
+                        <UserChat key={chat.id} chat={chat} />
                     )
                 })}
             </div>

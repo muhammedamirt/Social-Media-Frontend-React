@@ -2,7 +2,7 @@ import React from 'react'
 
 const UsersTh = ({ children }) => {
     return (
-        <div className='border bg-white rounded-md overflow-x-scroll shadow-md shadow-heavy-metal-500 max-h-screen'>
+        <div className='border bg-white rounded-md overflow-x-scroll scrollbar-hide shadow-md shadow-heavy-metal-500 max-h-screen'>
             <div className="flex flex-col">
                 <div className="-my-2 sm:-mx-6 lg:-mx-8">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">

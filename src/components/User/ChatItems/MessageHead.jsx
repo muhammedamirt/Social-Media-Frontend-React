@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MessageHead = ({user}) => {
+const MessageHead = ({user,online}) => {
     return (
         <div className='bg-heavy-metal-700 w-full rounded-t-md  py-4 px-3'>
             <div className='flex justify-between'>
@@ -10,7 +10,10 @@ const MessageHead = ({user}) => {
                     </div>
                     <div>
                         <h1 className='font-bold text-snow-drift-50 text-lg'>{user?.first_name} {user?.last_name}</h1>
-                        <p className='text-sm text-white'>online</p>
+                       {  online ?
+                      <p className='text-sm text-white'>online</p>:
+                      <p className='text-sm text-white'>offline</p>
+                    }
                     </div>
                 </div>
                 <div className='flex gap-4 text-white'>

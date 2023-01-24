@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
+import { adminLoginApi } from "../../../api/admin"
 import { routeChanged } from "../../../redux/topLoadingBar"
 import ParticlesBg from "../../User/ParticlesBg/Particles"
 const AdminLogin = () => {
@@ -14,7 +15,7 @@ const AdminLogin = () => {
     const [emailError, setEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
     const [authCommonMessage, setAuthCommonMessage] = useState('')
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     useEffect(() => {
         setEmailValidate(email.includes('@') && email.trim().length > 7)
         setPasswordValid(password.length > 7)
@@ -22,6 +23,23 @@ const AdminLogin = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
+        if (emailValidate && passwordValid) {
+            let data = await adminLoginApi(email, password)
+            console.log(data);
+            if (data?.passwordError) {
+                setPasswordError(true)
+            } else if (data?.emailError) {
+                setEmailError(true)
+            } else if (data?.success) {
+                console.log(data?.token);
+                localStorage.setItem('adminToken', data?.token)
+                localStorage.setItem('adminId', data?.id)
+                // dispatch(userAddDetails({ token: data?.token, id: data?.id }))
+                navigate('/admin')
+            }
+        } else {
+            setAuthCommonMessage('something wrong')
+        }
     }
 
     const emailChange = (e) => {
@@ -41,7 +59,9 @@ const AdminLogin = () => {
                 <div className="hidden sm:block py-52 px-20">
                     {/* <img className="w-full h-full object-cover" src="https://media.smallbiztrends.com/2021/01/Active-Social-Media-Presence.png" alt="Background" /> */}
                     <h1 className="text-white text-center text-6xl font-extrabold">Welcome...!</h1>
-                    <p className="text-red-200 text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <p className="text-red-200 text-center">
+                        Hello Admin , you can know about your application and users
+                    </p>
                 </div>
                 <div className=" flex flex-col justify-center">
                     <form className="bg-snow-drift-50 max-w-[400px] w-full mx-auto p-8 px-8 rounded-lg shadow-md shadow-heavy-metal-900">

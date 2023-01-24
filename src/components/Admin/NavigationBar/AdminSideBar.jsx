@@ -1,13 +1,14 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import AdminCard from '../Card/AdminCard'
-import LineAxisOutlinedIcon from '@mui/icons-material/LineAxisOutlined';
 import Groups2OutlinedIcon from '@mui/icons-material/Groups2Outlined';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
 // import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
 import SpatialAudioOffOutlinedIcon from '@mui/icons-material/SpatialAudioOffOutlined';
 
 const AdminSideBar = () => {
-    const location = useParams()
+    const location = useLocation()
     const activeElement = 'flex md:gap-1 md:gap-3 py-3 text-sm md:text-md bg-heavy-metal-300 md:-mx-10 px-6 md:px-10 rounded-md  shadow-heavy-metal-100'
     const inActiveElement = 'flex md:gap-1 md:gap-3 py-3 text-sm md:text-md hover:bg-heavy-metal-100 md:-mx-10 px-6 md:px-10 rounded-md transition-all hover:scale-110'
     return (
@@ -17,20 +18,18 @@ const AdminSideBar = () => {
                     <h2 className="text-heavy-metal-800 font-bold mb-3 hidden md:block">Navigation</h2>
                     <Link to={'/admin'}>
                         <p className={location?.pathname === "/admin" ? activeElement : inActiveElement}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                            </svg>
-                            <span className="hidden md:block">Home</span>
+                        <DashboardIcon/>
+                            <span className="hidden md:block">Home & Dashboard</span>
                         </p>
                     </Link>
-                    <Link to={'/admin'}>
+                    {/* <Link to={'/admin'}>
                         <p className={location?.pathname === '/admin/' || location?.pathname === '/message' ? activeElement : inActiveElement}>
                         <LineAxisOutlinedIcon/>
                             <span className="hidden md:block">Dashboard</span>
                         </p>
-                    </Link>
+                    </Link> */}
                     <Link to={"/admin/users"}>
-                        <p className={location?.pathname === "/admin/" ? activeElement : inActiveElement}>
+                        <p className={location?.pathname === "/admin/users" ? activeElement : inActiveElement}>
                         <Groups2OutlinedIcon/>
                             <span className="hidden md:block">Users</span>
                         </p>
@@ -47,6 +46,12 @@ const AdminSideBar = () => {
                         <p className={location?.pathname === "/admin/" ? activeElement : inActiveElement}>
                             <SpatialAudioOffOutlinedIcon />
                             <span className="hidden md:block">Reports</span>
+                        </p>
+                    </Link>
+                    <Link to={'/admin/settings'}>
+                        <p className={location?.pathname === '/admin/settings' || location?.pathname === '/settings' ? activeElement : inActiveElement}>
+                        <SettingsIcon/>
+                            <span className="hidden md:block">Settings</span>
                         </p>
                     </Link>
                 </div>

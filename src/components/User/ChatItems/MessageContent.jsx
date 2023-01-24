@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Moment from 'react-moment';
+import { useDispatch } from 'react-redux';
 import { addMessage } from '../../../api/messageReq';
+import { addSendMessage } from '../../../redux/sendMessageSlice';
 
 
 
-const MessageContent = ({ messages, setMessages, chat, setSendMessage }) => {
+const MessageContent = ({ messages, setSendMessage, setMessages, chat, receiveMessage }) => {
+
+    useEffect(() => {
+        console.log(receiveMessage !== null && receiveMessage.chatId === chat._id);
+        if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+            setMessages([...messages, receiveMessage])
+        }
+    },[receiveMessage])
+
+    // const dispatch = useDispatch()
     const currentUserId = localStorage.getItem('id')
     const [newMessages, setNewMessages] = useState('')
-
+    const scroll = useRef()
 
     const handleChange = (e) => {
         setNewMessages(e.target.value)
@@ -32,11 +43,15 @@ const MessageContent = ({ messages, setMessages, chat, setSendMessage }) => {
             // send message to socket  server
             const receiverId = chat?.members?.find((id) => id !== currentUserId)
             setSendMessage({ ...message, receiverId })
-
+            // dispatch(addSendMessage({ ...message, receiverId }))
         } else {
 
         }
+
     }
+    useEffect(() => {
+        scroll.current?.scrollIntoView({ behavior: 'smooth' })
+    })
     return (
         <div className='h-96 border-2 bg-white px-5 relative'>
             <div className='h-80 overflow-y-scroll scrollbar-hide'>
@@ -47,15 +62,15 @@ const MessageContent = ({ messages, setMessages, chat, setSendMessage }) => {
                             <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
                         </div> */}
                             <div>
-                                <div className={message?.senderId === currentUserId ? 'py-2 rounded-lg inline-block rounded-bl-none px-3 bg-snow-drift-200 max-w-xl' :
-                                    'py-2 rounded-lg inline-block rounded-br-none px-3 bg-blue-100 max-w-xl'}>
+                                <div ref={scroll} className={message?.senderId !== currentUserId ? 'py-2 rounded-lg inline-block rounded-bl-none px-3 bg-blue-100 max-w-xl' :
+                                    'py-2 rounded-lg inline-block rounded-br-none px-3 bg-snow-drift-200 max-w-xl'}>
                                     <p>
                                         {message?.text}
                                     </p>
+                                    <p className='text-xs text-blue-600 text-end font-thin'>
+                                        <Moment className={message?.senderId === currentUserId ? "text-[9px] text-blue-600 text-end font-thin" : 'text-[9px] text-blue-600 text-start font-thin'} fromNow>{message?.createdAt}</Moment>
+                                    </p>
                                 </div>
-                                <p className='text-xs text-blue-600 text-end font-thin'>
-                                    <Moment className="text-xs text-blue-600 text-end font-thin" fromNow>{message?.createdAt}</Moment>
-                                </p>
                             </div>
                         </div>
                     )
