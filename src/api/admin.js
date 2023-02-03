@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000/admin" })
+const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL_ADMIN })
 
 export const adminLoginApi = async (email, password) => {
     console.log('hello');
@@ -11,7 +11,7 @@ export const adminLoginApi = async (email, password) => {
 
 export const allUsersApi = async () => {
     let { data } = await API.get('/allUsers', { withCredentials: true })
-    console.log(data,'all users');
+    console.log(data, 'all users');
     return data;
 }
 
@@ -20,7 +20,7 @@ export const allUsersApi = async () => {
 //     return data
 // }
 
-export const getIsBlockedApi = async (userId)=>{
+export const getIsBlockedApi = async (userId) => {
     let { data } = await API.put(`/getIsBlocked/${userId}`, { withCredentials: true })
     return data
 }

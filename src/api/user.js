@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000" })
+const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL })
 
 export const loginApi = async (email, password) => {
     let { data } = await API.post('/login', { email, password }, { withCredentials: true })
@@ -146,11 +146,11 @@ export const googleSignUpAPI = async (userData) => {
 
 export const uploadVideoFileAPI = async (contentData) => {
     console.log(contentData);
-    let {data} = await API.post('/uploadVideoFile', contentData) 
+    let { data } = await API.post('/uploadVideoFile', contentData)
     return data;
 }
 
-export const getAllVideoAPI = async ()=>{
-    let {data} = await API.get('/getAllVideos')
+export const getAllVideoAPI = async () => {
+    let { data } = await API.get('/getAllVideos')
     return data;
 }
