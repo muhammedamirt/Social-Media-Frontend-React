@@ -22,13 +22,13 @@ const EditProfileModal = ({ visible, onClose, user, setUser }) => {
   const [profile, setProfile] = useState(null);
   const [cover, setCover] = useState(null);
   const [loading, setLoading] = useState(false)
-  const [color, setColor] = useState("#303E2B");
   const imageRefPro = useRef(null);
   const imageRefCov = useRef(null);
   const handleChange = async (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
+  const color = "#303E2B"
   const handleProfile = async (e) => {
     setProfile(e.target.files[0]);
   };
@@ -37,7 +37,6 @@ const EditProfileModal = ({ visible, onClose, user, setUser }) => {
   };
   const handleSubmit = async () => {
     setLoading(true)
-    console.log(profile, "profile");
     if (profile) {
       const formData = new FormData();
       formData.append("file", profile);
@@ -47,7 +46,6 @@ const EditProfileModal = ({ visible, onClose, user, setUser }) => {
       );
       const imageUrl = await uploadProfile(formData);
       data.picture = imageUrl;
-      console.log(imageUrl);
       setProfile(null)
     }
     // uploading cover_image to cloudinary
@@ -104,8 +102,8 @@ const EditProfileModal = ({ visible, onClose, user, setUser }) => {
                         <input onChange={handleProfile} name="cover_img" ref={imageRefPro} hidden type="file" />
                       </div>
                       <div className="flex justify-center mt-2">
-                        <div className='w-36 h-36 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                          <img src={profile ? URL.createObjectURL(profile) : data?.picture} alt="avatars" />
+                        <div className='w-36 h-36 rounded-full overflow-hidden object-cover shadow-sm shadow-gray-500'>
+                          <img src={profile ? URL.createObjectURL(profile) : data?.picture} alt="avatars" className="w-full h-full" />
                         </div>
                       </div>
                     </div>

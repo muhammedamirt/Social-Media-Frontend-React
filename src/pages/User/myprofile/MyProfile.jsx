@@ -102,14 +102,14 @@ const MyProfile = () => {
                                     <img src={userData?.cover} alt="cover" />
                                 </div>
                                 <div className="flex absolute w-full justify-center md:justify-start  top-14 md:left-4">
-                                    <div className='w-36 h-36 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                        <img src={userData?.picture} alt="avatars" />
+                                    <div className='w-36 h-36 rounded-full overflow-hidden object-cover shadow-sm shadow-gray-500'>
+                                        <img src={userData?.picture} alt="avatars" className="w-full h-full" />
                                     </div>
                                 </div>
-                                <div className="flex justify-center   md:px-14">
+                                <div className="flex justify-center md:px-14">
                                     <div>
                                         <h2 className="mt-10 sm:mt-10 md:mt-0 text-center text-md sm:text-3xl font-bold text-heavy-metal-800">
-                                            {`${userData?.first_name} ${userData?.last_name}`}
+                                            {userData?.first_name}  {userData?.last_name === undefined ? "" : userData?.last_name}
                                         </h2>
                                         <div className="text-center text-heavy-metal-500 leading-4">{userData?.place},{userData?.country}</div>
                                     </div>
@@ -172,10 +172,10 @@ const MyProfile = () => {
                     </div>
                     :
                     //  <Card>
-                        <div class="flex items-center justify-center">
-                            <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-                            </div>
+                    <div class="flex items-center justify-center">
+                        <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
                         </div>
+                    </div>
                     // {/* </Card> */}
                 }
             </Layout>

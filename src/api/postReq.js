@@ -35,7 +35,17 @@ export const handleLikePost = async (postId, userId) => {
     return data;
 }
 
-export const savePostAPI = (userId , postId) => {
-    const { data } = API.put(`/savePost/${userId}`, {postId})
+export const savePostAPI = async (userId, postId) => {
+    const { data } = await API.put(`/savePost/${userId}`, { postId })
+    return data;
+}
+
+export const onePostDataAPI = async (postId) => {
+    const { data } = await API.get(`/onePost/${postId}`)
+    return data;
+}
+
+export const reportPostAPI = async (reportData) => {
+    const { data } = await API.post(`/report`,reportData)
     return data;
 }

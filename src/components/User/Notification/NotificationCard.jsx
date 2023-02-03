@@ -8,7 +8,7 @@ const NotificationCard = () => {
    dispatch(routeChanged())
     return (
         <Card>
-            <div className="-mx-4">
+            <div className="-mx-4 ">
                 <div className="flex items-center gap-3 bottom-b border-b-heavy-metal-600 p-4">
                     <Link to={'/profile'}>
                         <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500 cursor-pointer'>

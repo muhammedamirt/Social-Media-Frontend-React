@@ -25,10 +25,10 @@ const SavedPosts = () => {
                     <Card>
                         <div className="grid md:pl-10 grid-cols-3 gap-2 w-full">
                             {savedPost?.saved?.length !== 0 ?
-                                savedPost.map((saved) => {
+                                savedPost.map((saved, i) => {
                                     return (<div key={saved?.saved?._id}>
-                                        <Link to={'/viewPosts'}>
-                                            <img className="rounded-md overflow-hidden h-20 w-20 md:h-44 md:w-44 flex items-center cursor-pointer object-cover" src={'https://cdn.kimkim.com/files/a/images/ef80bf6d27c3b6eb60a534712d60d3604a757b2d/big-e6f8c61e72a89be6dfc9ed5c7c65a562.jpg'} alt="posts" />
+                                        <Link to={'/singlePost'} state={{ postId: saved?.saved?._id }}>
+                                            <img className="hover:shadow-lg shadow-snow-drift-300 rounded-md overflow-hidden h-20 w-20 md:h-44 md:w-44 flex items-center cursor-pointer object-cover" src={saved?.saved?.image} alt="posts" />
                                         </Link>
                                     </div>)
                                 }) :

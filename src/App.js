@@ -11,9 +11,7 @@ import Settings from "./pages/User//Settings/Settings";
 import Notification from "./pages/User/Notifications/Notification";
 import CreatePost from "./components/User/CreatePost/CreatePost";
 import MyProfile from "./pages/User/myprofile/MyProfile";
-import Chat from "./pages/User/Chat/Chat";
 import Search from "./pages/User/Search/Search";
-import Message from "./pages/User/Chat/Message";
 import AdminHome from "./pages/Admin/Home/AdminHome";
 import ProtectedRoute from "./components/User/ProtectedRout/ProtectedRoute";
 import AdminLogin from "./components/Admin/Login/AdminLogin";
@@ -26,6 +24,9 @@ import ForgotPassword from "./pages/User/ForgotPassword/ForgotPassword";
 import ChangePassword from "./pages/User/ForgotPassword/ChangePassword";
 import SavedPosts from "./pages/User/SavedPost/SavedPosts";
 import ChatPage from "./pages/User/Chat/ChatPage";
+import PostOneView from "./pages/User/PostOneView/PostOneView";
+import ProfileParamsCheck from "./pages/User/Profile/profileParamsCheck";
+import Video from "./pages/User/Videos/Video";
 
 function App() {
   // const [userLoggedIn, setUserLoggedIn] = useState(true)
@@ -42,28 +43,27 @@ function App() {
       <Routes>
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} exact />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} exact />
-        <Route path="/register" element={<Register />} exact />
-        <Route path="/profile/:userId" element={<ProtectedRoute><Profile /></ProtectedRoute>} exact />
-        <Route path="/:id/Verify/:token" element={<VerifyEmail />} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} exact />
+        <Route path="/profile/:userId" element={<ProtectedRoute><ProfileParamsCheck><Profile /></ProfileParamsCheck></ProtectedRoute>} exact />
+        <Route path="/:id/Verify/:token" element={<ProtectedRoute><VerifyEmail /></ProtectedRoute> }/>
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-        <Route path="/notifications" element={<ProtectedRoute ><Notification /> </ProtectedRoute>} />
-        <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
-        <Route path="/myprofile" element={<ProtectedRoute><MyProfile /></ProtectedRoute>} />
-        <Route path="/chats" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
-        <Route path="/message" element={<ProtectedRoute><Message /></ProtectedRoute>} />
-        <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
-        <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/:id/changePassword/:token" element={<ChangePassword />} />
-        <Route path="/savedPosts" element={<SavedPosts />} />
-        <Route path="/savedPosts" element={<SavedPosts />} />
-        <Route path="/chatUi" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
+        <Route path="/notifications" element={<ProtectedRoute ><Notification /> </ProtectedRoute>} exact />
+        <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} exact />
+        <Route path="/myprofile" element={<ProtectedRoute><MyProfile /></ProtectedRoute>} exact />
+        <Route path="/chats" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} exact />
+        <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} exact />
+        <Route path="/forgotPassword" element={<PublicRoute><ForgotPassword /></PublicRoute>} exact />
+        <Route path="/:id/changePassword/:token" element={<PublicRoute><ChangePassword /></PublicRoute>} exact />
+        <Route path="/savedPosts" element={<ProtectedRoute><SavedPosts /></ProtectedRoute>} exact />
+        <Route path="/singlePost" element={<ProtectedRoute><PostOneView /></ProtectedRoute>} exact />
+        <Route path="/shortVideos" element={<ProtectedRoute><Video /></ProtectedRoute>} exact />
       </Routes>
-      {/* admin routes temporary */}
+      {/* admin routes  */}
       <Routes>
-        <Route path="/admin/" element={<AdminProtectRoute><AdminHome /></AdminProtectRoute>} />
-        <Route path="/admin/login" element={<AdminPublicRoute><AdminLogin /></AdminPublicRoute>} />
-        <Route path="/admin/users" element={<AdminProtectRoute><UsersList /></AdminProtectRoute>} />
-        <Route path="/admin/settings" element={<AdminProtectRoute><AdminSettings /></AdminProtectRoute>} />
+        <Route path="/admin/" element={<AdminProtectRoute><AdminHome /></AdminProtectRoute>} exact />
+        <Route path="/admin/login" element={<AdminPublicRoute><AdminLogin /></AdminPublicRoute>} exact />
+        <Route path="/admin/users" element={<AdminProtectRoute><UsersList /></AdminProtectRoute>} exact />
+        <Route path="/admin/settings" element={<AdminProtectRoute><AdminSettings /></AdminProtectRoute>} exact />
       </Routes>
     </div>);
 }

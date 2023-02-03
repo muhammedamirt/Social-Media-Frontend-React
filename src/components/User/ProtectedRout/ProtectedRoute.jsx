@@ -11,6 +11,9 @@ const ProtectedRoute = (props) => {
     if(!userId) return <Navigate to='/login' />
         const getData = async () => {
             const response = await userDataToProfile(userId);
+            if (response?.isBlocked === true){
+                return localStorage.clear() 
+            }
             dispatch(addUserData(response));
         };
     const getUser = () => {

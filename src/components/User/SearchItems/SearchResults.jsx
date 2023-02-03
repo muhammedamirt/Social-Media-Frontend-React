@@ -8,11 +8,11 @@ const SearchResults = ({ searchResults }) => {
         <div>
             <Card>
                 <div className="sm:px-10">
-                    <div className="flex justify-between text-sm md:text-md md:px-16 py-2 border-heavy-metal-900">
+                    <div className="flex justify-center text-sm md:text-md md:px-16 py-2 border-heavy-metal-900">
                         <p className={Active}>Users</p>
-                        <p className={inActive}>Posts</p>
+                        {/* <p className={inActive}>Posts</p>
                         <p className={inActive}>Tags</p>
-                        <p className={inActive}>Location</p>
+                        <p className={inActive}>Location</p> */}
                     </div>
                 </div>
                 <div className="px-5">

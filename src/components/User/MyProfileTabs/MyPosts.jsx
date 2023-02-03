@@ -24,8 +24,8 @@ const MyPosts = () => {
                 <div className="grid grid-cols-3 gap-2">
                     {userPosts.length !== 0 ? userPosts.map((obj) => {
                         return (<div key={obj?.posts?._id}>
-                           <Link to={'/viewPosts'}>
-                            <img className="rounded-md overflow-hidden h-20 w-20 md:h-44 md:w-44 flex items-center cursor-pointer object-cover" src={obj?.posts?.image} alt="posts" />
+                            <Link to={'/singlePost'} state={{ postId: obj?.posts?._id }}>
+                                <img className="rounded-md overflow-hidden h-20 w-20 md:h-44 md:w-44 flex items-center cursor-pointer object-cover" src={obj?.posts?.image} alt="posts" />
                             </Link>
                         </div>)
                     }) :

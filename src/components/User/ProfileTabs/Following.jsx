@@ -1,7 +1,9 @@
 import { Card } from "../Card/Card"
 import Groups2Icon from '@mui/icons-material/Groups2';
+import { Link, NavLink } from "react-router-dom";
 
 const Following = ({ followingData }) => {
+    const myId = localStorage.getItem('id')
     return (
         <div>
             <div>
@@ -13,17 +15,20 @@ const Following = ({ followingData }) => {
                         followingData.map((following) => {
                             return (
                                 <div key={following?.following?._id} >
-                                    <div className="border-b p-4 -mx-4 border-b-heavy-metal-300">
-                                        <div className="flex gap-3">
-                                            <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                                <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
-                                            </div>
-                                            <div>
-                                                <h3 className="font-bold text-lg">{following?.following?.first_name} {following?.following?.last_name}</h3>
-                                                <h4 className="text-sm leading-3">{following?.following?.username}</h4>
+                                    {<NavLink to={myId !== following?.following?._id ? `/profile/${following?.following?._id}`:'/myprofile'}>
+                                        <div className="border-b p-4 -mx-4 border-b-heavy-metal-300 hover:bg-heavy-metal-200 cursor-pointer">
+                                            <div className="flex gap-3">
+                                                <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
+                                                    <img src={following?.following?.picture} alt="avatars" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-lg">{following?.following?.first_name} {following?.following?.last_name}</h3>
+                                                    <h4 className="text-sm leading-3">{following?.following?.username}</h4>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </NavLink>
+                                    }
                                 </div>
                             )
                         })

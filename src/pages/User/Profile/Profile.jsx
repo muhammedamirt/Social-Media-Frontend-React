@@ -7,8 +7,9 @@ import { Card } from "../../../components/User/Card/Card"
 import { useDispatch } from "react-redux"
 import { routeChanged } from '../../../redux/topLoadingBar'
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { fetchFollowers, fetchFollowing, fetchOneUserProfile, followUser } from "../../../api/user"
+import { createChat } from "../../../api/chatRequist"
 
 
 const Profile = () => {
@@ -27,9 +28,14 @@ const Profile = () => {
         setFollowersCount(data?.followers?.length)
         setSpecificUser(data)
     }
+
+    useEffect(() => {
+        fetchUserProfile()
+    }, [userId])
+
     const myId = localStorage.getItem('id')
     dispatch(routeChanged())
-
+    const navigate = useNavigate()
     const [postTab, setPostTab] = useState(false)
     const [followingTab, setFollowingTab] = useState(false)
     const [followersTab, setFollowersTab] = useState(false)
@@ -49,9 +55,6 @@ const Profile = () => {
         }
     }
 
-    useEffect(() => {
-        fetchUserProfile()
-    }, [])
 
     const managePostTab = () => {
         setFollowingTab(false)
@@ -84,6 +87,17 @@ const Profile = () => {
         setAboutTab(true)
     }
 
+    const createMessage = async () => {
+        const senderId = localStorage.getItem('id')
+        const response = await createChat({ senderId, receiverId: userId });
+        console.log(response);
+        if (response.status === 200) {
+            navigate('/chats')
+        }else{
+            console.log('llo');
+            // navigate('/chats')
+        }
+    };
 
     let activeRoute = 'flex gap-2 items-center border-b-4 border-heavy-metal-800 bg-heavy-metal-400 cursor-pointer text-heavy-metal-500 bg-opacity-20 rounded-t-md'
     let inActiveRoute = 'flex gap-2 items-center hover:underline hover:font-bold cursor-pointer'
@@ -98,8 +112,8 @@ const Profile = () => {
                                 <img src={specificUser?.cover} alt="cover" />
                             </div>
                             <div className="flex absolute w-full justify-center md:justify-start  top-14 md:left-4">
-                                <div className='w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-sm shadow-gray-500'>
-                                    <img src={specificUser?.picture} alt="avatars" />
+                                <div className='w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover overflow-hidden shadow-sm shadow-gray-500'>
+                                    <img src={specificUser?.picture} alt="avatars" className="w-full h-full" />
                                 </div>
                             </div>
                             <div className="flex justify-center md:px-14">
@@ -136,11 +150,9 @@ const Profile = () => {
                                     }
                                 </div>
                                 <div>
-                                    <Link to={'/startMessage'}>
-                                        <button className="hover:shadow-md hover:shadow-black flex gap-2 items-center bg-heavy-metal-800 rounded-xl shadow-md shadow-gray-500">
-                                            <p className="text-white font-bold my-1 mx-7  ">message</p>
-                                        </button>
-                                    </Link>
+                                    <button onClick={createMessage} className="hover:shadow-md hover:shadow-black flex gap-2 items-center bg-heavy-metal-800 rounded-xl shadow-md shadow-gray-500">
+                                        <p className="text-white font-bold my-1 mx-7 ">message</p>
+                                    </button>
                                 </div>
                             </div>
                             <div className="mt-10 flex gap-5 justify-center">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "../Card/Card"
 import { Link } from 'react-router-dom'
-import OutsideClickHandler from 'react-outside-click-handler';
+// import OutsideClickHandler from 'react-outside-click-handler';
 import { commentPost, fetchPostComments, handleLikePost } from "../../../api/postReq";
 import Moment from 'react-moment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -11,6 +11,7 @@ import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import PostSettings from "./PostSettings";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const PostForm = ({ post }) => {
   const userId = localStorage.getItem('id')
@@ -89,9 +90,11 @@ const PostForm = ({ post }) => {
             </div>
           </div>
           <div className="grow">
-            <Link to={userId  !== post?.userId?._id ? `/profile/${post?.userId?._id}` : '/myprofile'} className="font-semibold hover:underline cursor-pointer">{post?.userId?.username}</Link>
-            <p className="text-blue-600 text-sm">Location</p>
-          </div>
+            <Link to={userId !== post?.userId?._id ? `/profile/${post?.userId?._id}` : '/myprofile'} className="font-semibold hover:underline cursor-pointer">{post?.userId?.username}</Link>
+            <div>
+              {/* //moment */}
+              <Moment className="text-sm text-blue-400" fromNow>{post?.date}</Moment>
+            </div>          </div>
           <div>
             <button onClick={() => setDropDown(!dropdown)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -99,21 +102,20 @@ const PostForm = ({ post }) => {
               </svg>
             </button>
 
-            <OutsideClickHandler onOutsideClick={() => {
+            {/* <OutsideClickHandler onOutsideClick={() => {
               setShowEmojis(false)
-              setDropDown(false)
             }}>
               <div className="relative">
-                {dropdown && (
-                  <PostSettings postData={post}/>
-                )}
               </div>
-            </OutsideClickHandler>
+            </OutsideClickHandler> */}
+            {dropdown && (
+              <PostSettings postData={post} />
+            )}
           </div>
         </div>
         <div className="mt-2">
-          <div className=" rounded-md overflow-hidden">
-            <img onDoubleClick={() => handleLike(post._id)} src='https://cdn.kimkim.com/files/a/images/ef80bf6d27c3b6eb60a534712d60d3604a757b2d/big-e6f8c61e72a89be6dfc9ed5c7c65a562.jpg' alt="post" />
+          <div className=" object-cover rounded-md overflow-hidden">
+            <img onDoubleClick={() => handleLike(post._id)} className="" src={post?.image} alt="post" />
             {/* <span className="fixed text-red-600">
                   <FavoriteIcon />
             </span> */}
@@ -124,9 +126,8 @@ const PostForm = ({ post }) => {
                 <span className="text-red-600">
                   <FavoriteIcon />
                 </span>
-                : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                </svg>}
+                : <FavoriteBorderIcon />
+              }
               {likeCount}
             </button>
             <button onClick={() => handleCommentClick(post?._id)} className="flex gap-2 items-center">
@@ -141,47 +142,45 @@ const PostForm = ({ post }) => {
               </svg>
             </button>
           </div>
-          <div>
-            {/* //moment */}
-            <Moment className="text-sm text-snow-drift-400" fromNow>{post?.date}</Moment>
+          <div className="w-full"> 
+            <p className="my-1 break-words text-sm">{post?.text}</p>
           </div>
-          <p className="my-1 text-sm">{post?.text}</p>
           <div className="flex gap-2">
-            <div className="flex gap-3">
-              <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500 mt-4'>
+            <div className="flex gap-3"> 
+              {/* <div className='w-12 rounded-full overflow-hidden shadow-sm shadow-gray-500 mt-4'>
                 <img src="https://i.pinimg.com/originals/31/44/7e/31447e25b7bc3429f83520350ed13c15.jpg" alt="avatars" />
-              </div>
+              </div> */}
             </div>
             <div className="flex grow mt-4 relative bg-white rounded-full py-1">
-              <span className="py-2 px-2 text-yellow-500 cursor-pointer" onClick = {() => setShowEmojis(!showEmojis)}>
-              <EmojiEmotionsIcon />
-            </span>
-            <textarea value={comment} onChange={commentTexting} className="block rounded-full w-full p-2 h-10 px-4 overflow-hidden outline-none" placeholder="Write a comment..."></textarea>
+              <span className="py-2 px-2 text-yellow-500 cursor-pointer" onClick={() => setShowEmojis(!showEmojis)}>
+                <EmojiEmotionsIcon />
+              </span>
+              <textarea value={comment} onChange={commentTexting} className="block rounded-full w-full p-2 h-10 px-4 overflow-hidden outline-none" placeholder="Write a comment..."></textarea>
 
-            <button onClick={() => handleSendComment(post?._id)} className="absolute top-2 right-3 my-1">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-            </button>
+              <button onClick={() => handleSendComment(post?._id)} className="absolute top-2 right-3 my-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
-        <div className={showEmojis ? 'w-8/12 flex justify-center block absolute ' : 'hidden'}>
-          <Picker data={data} previewPosition="none" onEmojiSelect={
-            (e) => {
-              setComment(comment + e.native)
-            }
-          } />
-        </div>
-        {commentFormVal &&
-          <div className="flex w-full justify-center">
-            <p className="font-semibold text-red-600 text-sm">Fill the field</p>
-          </div>}
-        {commentIsOpen &&
-          <div {...bind()} onClick={handleLongPress}>
-            <Comments data={fetchedComments} longPressed={longPressed} />
+          <div className={showEmojis ? 'w-8/12 flex justify-center block absolute ' : 'hidden'}>
+            <Picker data={data} previewPosition="none" onEmojiSelect={
+              (e) => {
+                setComment(comment + e.native)
+              }
+            } />
           </div>
-        }
-    </div>
+          {commentFormVal &&
+            <div className="flex w-full justify-center">
+              <p className="font-semibold text-red-600 text-sm">Fill the field</p>
+            </div>}
+          {commentIsOpen &&
+            <div {...bind()} onClick={handleLongPress}>
+              <Comments data={fetchedComments} longPressed={longPressed} />
+            </div>
+          }
+        </div>
       </Card >
 
     </div >

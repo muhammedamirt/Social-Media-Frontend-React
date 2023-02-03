@@ -10,6 +10,7 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false)
   const [errMessage, setErrMessage] = useState(false)
   const [userNotFount, setUserNotFount] = useState(false)
+  // const [blankInput, setBlankInput] = useState(false)
 
   useEffect(() => {
     setEmailValidate(email.includes('@') && email.trim().length > 7)
@@ -21,6 +22,7 @@ const ForgotPassword = () => {
   }
 
   const handleEmailSend = async () => {
+    console.log('hello');
     try {
       setLoading(true)
       if (emailValidate) {
@@ -67,6 +69,7 @@ const ForgotPassword = () => {
             {successMessage && <p className="text-lg font-bold text-center text-green-600"> Link Sent To Your Email</p>}
             {userNotFount && <p className="text-lg font-bold text-center text-red-600">User not found</p>}
             {errMessage && <p className="text-lg font-bold text-center text-red-600">internal error</p>}
+            {/* {blankInput && <p className="text-lg font-bold text-center text-red-600">Fill the field</p>} */}
             {!successMessage && <button disabled={emailValidate ? false : true} className="w-full my-5 py-3   bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleEmailSend}>Send Link</button>}
           </div>
         </div>

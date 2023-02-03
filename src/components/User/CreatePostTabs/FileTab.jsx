@@ -3,6 +3,7 @@ import S3 from "aws-sdk/clients/s3";
 import { Card } from "../Card/Card"
 import { createImagePost } from "../../../api/postReq";
 import { useNavigate } from "react-router-dom";
+import { Alert, CircularProgress } from "@mui/material";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const S3_BUCKET = process.env.REACT_APP_NAME
@@ -19,6 +20,7 @@ const FileTab = () => {
     const [fileUpload, setFileUpload] = useState('')
     const [captions, setCaptions] = useState('')
     const [imgValidate, setImgValidate] = useState(false)
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const userId = localStorage.getItem('id')
 
@@ -26,14 +28,14 @@ const FileTab = () => {
         const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
         const feed = e.target.files[0]
         if (!allowedExtensions.exec(feed.name)) {
-        console.log('not a image');
-        setImgValidate(true)
+            console.log('not a image');
+            setImgValidate(true)
         } else {
             setImgValidate(false)
             setFileUpload(feed);
-          }
-        //  setFileUpload(e.target.files[0])
         }
+        //  setFileUpload(e.target.files[0])
+    }
 
 
     const handleUpload = async () => {
@@ -47,8 +49,10 @@ const FileTab = () => {
                 Body: result
             }
             s3.upload(uploadParams).promise().then(async (res) => {
+                setLoading(true)
                 const data = await createImagePost({ image: res.Location, captions }, userId)
                 if (data.status) {
+                setLoading(false)
                     navigate('/myprofile')
                 }
             }).catch((err) => {
@@ -65,7 +69,8 @@ const FileTab = () => {
                             <svg aria-hidden="true" className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                           {imgValidate&& <p className="text-red-600 font-bold"> choose image</p>}
+                            {imgValidate && <Alert className="mt-5" severity="error">Only SVG, PNG, JPG or GIF Allowed!</Alert>
+                            }
                         </div>
                         <input id="dropzone-file" type="file" className="hidden" multipart onChange={handleInputChange} />
                     </label>
@@ -82,9 +87,13 @@ const FileTab = () => {
                         </div> : null
                     }
                     <div className="border mt-5 rounded-lg">
-                        <textarea value={captions} onChange={(e) => setCaptions(e.target.value)} placeholder="Write A Caption to your Photo" className='w-full rounded-xl border-heavy-metal-700 border-2'></textarea>
+                        <textarea value={captions} onChange={(e) => setCaptions(e.target.value)} placeholder="Say Something..." className='w-full px-5 pt-1 rounded-xl border-heavy-metal-700 border-2'></textarea>
                     </div>
-                    <button className="w-full bg-heavy-metal-500 text-white py-3 rounded-lg mt-1 hover:bg-heavy-metal-800" onClick={handleUpload}>Upload</button>
+                    {loading &&
+                        <div className="flex justify-center">
+                            <CircularProgress color="success"/>
+                        </div>}
+                    {!loading && <button className="w-full bg-heavy-metal-500 text-white py-3 rounded-lg mt-1 hover:bg-heavy-metal-800" onClick={handleUpload}>Upload</button>}
                 </Card>
             </div>
         </div>

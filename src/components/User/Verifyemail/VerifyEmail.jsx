@@ -12,7 +12,7 @@ const VerifyEmail = () => {
         e.preventDefault()
         let data =await verifyEmailFunc(id, token)
         console.log(data);
-        // navigate('/login')
+        navigate('/login')
     }
     return (
         <div className="overflow-hidden py-40 w-full md:px-10">

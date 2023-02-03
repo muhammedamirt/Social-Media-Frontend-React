@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { searchUserApi } from '../../../api/user'
 import Layout from '../../../components/User/Layout/Layout'
 import SearchBar from '../../../components/User/SearchItems/SearchBar'
 import SearchResults from '../../../components/User/SearchItems/SearchResults'
+import { routeChanged } from '../../../redux/topLoadingBar'
 
 const Search = () => {
     const [searchInput, setSearchInput] = useState('')
     const [searchUsers, setSearchUsers] = useState([])
-
+    const dispatch = useDispatch()
+    dispatch(routeChanged())
     useEffect(() => {
         try {
             const fetchSearchData = async () => {

@@ -1,6 +1,6 @@
 import { Card } from "../Card/Card"
 
-const AboutTab = () => {
+const VideoTab = () => {
   return (
     <div>
         <Card>
@@ -14,4 +14,4 @@ const AboutTab = () => {
   )
 }
 
-export default AboutTab
+export default VideoTab

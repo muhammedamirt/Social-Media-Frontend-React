@@ -183,10 +183,12 @@ const Register = () => {
                                 <p className=" text-sm text-heavy-metal-900">Sign In?<span className="text-blue-600 cursor-pointer hover:underline">Click Me</span></p>
                             </Link>
                         </div>
-                        <div className="flex justify-center">
+                        <div className="flex justify-center w-full">
                             <h4>------OR------</h4>
                         </div>
-                        <GoogleSignUp />
+                        <div className="flex justify-center w-full">
+                            <GoogleSignUp />
+                        </div>
                         {blankCheck && <p className="text-red-600 text-sm text-center">Fill all Fields</p>}
                         {valError && <p className="text-red-600 text-sm text-center">Some Data is Wrong</p>}
                         {successMessage && <p className="text-green-800 font-bold text-center">Verification link sent to your Email</p>}

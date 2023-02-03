@@ -128,3 +128,29 @@ export const fetchSavedPostsAPI = async (userId) => {
     return data;
 }
 
+export const getQrUrlAPI = async (userId) => {
+    let { data } = await API.get(`/qrCode/${userId}`)
+    return data;
+}
+
+export const googleLoginAPI = async (userData) => {
+    let { data } = await API.post('/googleLogin', userData)
+    return data;
+}
+
+export const googleSignUpAPI = async (userData) => {
+    console.log(userData);
+    let { data } = await API.post('/googleSignup', userData)
+    return data;
+}
+
+export const uploadVideoFileAPI = async (contentData) => {
+    console.log(contentData);
+    let {data} = await API.post('/uploadVideoFile', contentData) 
+    return data;
+}
+
+export const getAllVideoAPI = async ()=>{
+    let {data} = await API.get('/getAllVideos')
+    return data;
+}

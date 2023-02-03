@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 const PublicRoute = ({ children }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
-
     useEffect(() => {
         const publicFu = () => {
             dispatch(userAddDetails({ token: localStorage.getItem('userToken'), id: localStorage.getItem('id') }));

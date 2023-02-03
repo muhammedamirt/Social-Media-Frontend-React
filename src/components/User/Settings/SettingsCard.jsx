@@ -1,12 +1,24 @@
-import { userLogoutAPI } from "../../../api/user"
+import { getQrUrlAPI, userLogoutAPI } from "../../../api/user"
 import { Card } from "../Card/Card"
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import { Link, useNavigate } from "react-router-dom";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-
+// import NotificationsIcon from '@mui/icons-material/Notifications';
+// import LockIcon from '@mui/icons-material/Lock';
+// import InfoIcon from '@mui/icons-material/Info';
+import LogoutIcon from '@mui/icons-material/Logout';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import { useState } from "react";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Alert, Snackbar } from "@mui/material";
 
 const SettingsCard = () => {
+  const [qrCodeStatus, setQrCodeStatus] = useState(false)
+  const [copyAlert, setCopyAlert] = useState(false)
+  const [QrURL, setQrURL] = useState('')
+  const [profileUrl, setProfileUrl] = useState('')
   const userId = localStorage.getItem('id')
   const navigate = useNavigate()
 
@@ -37,67 +49,141 @@ const SettingsCard = () => {
     submit()
   }
 
+  const handleGetLink = async () => {
+    setQrCodeStatus(true)
+    try {
+      const data = await getQrUrlAPI(userId)
+      setQrURL(data?.profileQrUrl)
+      setProfileUrl(data?.profileUrl)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const qrOnClose = () => {
+    setQrURL('')
+    setProfileUrl('')
+    setQrCodeStatus(false)
+  }
+
+  const handleCopyLink = async (url) => {
+    await navigator.clipboard.writeText(url);
+    setCopyAlert(true)
+  };
+
+
+
+
   return (
     <div>
       <Card>
         <div className="px-4">
           <div className="grid gap-5">
-            <div className="flex gap-4  w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
+            <div className="flex gap-4  md:w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded" onClick={handleGetLink}>
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
-                </svg>
+                <QrCodeScannerIcon />
               </span>
-              <p className="font-bold hover:underline cursor-pointer">Notifications</p>
+              <p className="font-bold hover:underline cursor-pointer">GetLink</p>
             </div>
+            {qrCodeStatus &&
+              <div>
+                <div className=" justify-center w-full items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                  <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                    {/* {/content/} */}
+                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                      {/* {/header/} */}
+                      <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                        <h3 className="text-3xl font-semibold">Scan QRCode</h3>
+                      </div>
+                      {/* {/body/}   */}
+                      <div>
+                        <div className="w-40 flex mx-10 justify-center">
+                          <div>
+                            {QrURL !== '' ?
+                              <img src={QrURL} alt="QrCode" />
+                              :
+                              <div className="">
+                                <img className="relative opacity-10 animate-pulse blur-sm" src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png" alt="" />
+                                <div className="absolute top-36 ml-16 ">
+                                  <CircularProgress />
+                                </div>
+                              </div>
+                            }
+                          </div>
+                        </div>
+                        <div className="flex gap-2 borer justify-center">
+                          <div className="flex gap-2 border my-1 py-1 px-3 rounded-2xl">
+                            <div>
+                              <input className="w-40 rounded outline-none" value={profileUrl} type="text" readOnly />
+                            </div>
+                            <div onClick={() => handleCopyLink(profileUrl)}>
+                              <ContentCopyIcon />
+                              {/* {copyAlert &&
+                                <Snackbar
+                                  open={copyAlert}
+                                  autoHideDuration={6000}
+                                  onClose={()=>setCopyAlert(false)}
+                                  message="Link copied"
+                                  // action={action}
+
+                                />} */}
+                              <Snackbar open={copyAlert} autoHideDuration={6000} >
+                                <Alert severity="success" sx={{ width: '100%' }}>
+                                  This is a success message!
+                                </Alert>
+                              </Snackbar>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <div>
+                          <button
+                            className="text-red-500 hover:text-white hover:bg-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            type="button"
+                            onClick={qrOnClose}
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+              </div>
+            }
+            {/* <div className="flex gap-4  md:w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
+                    <span>
+                      <NotificationsIcon />
+                    </span>
+                    <p className="font-bold hover:underline cursor-pointer">Notifications</p>
+                  </div> */}
             <Link to={'/savedPosts'}>
-              <div className="flex gap-4 w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
+              <div className="flex gap-4 md:w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
                 <span>
                   <BookmarkIcon />
                 </span>
                 <p className="font-bold hover:underline cursor-pointer">Saved</p>
               </div>
             </Link>
-            <div className="flex gap-4 w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-              </span>
-              <p className="font-bold hover:underline cursor-pointer">Privacy</p>
-            </div>
+            {/* <div className="flex gap-4 md:w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
+                    <span>
+                      <LockIcon />
+                    </span>
+                    <p className="font-bold hover:underline cursor-pointer">Privacy</p>
+                  </div> */}
 
-            <div className="flex gap-4 w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
+            {/* <div className="flex gap-4 md:w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
+                    <span>
+                      <InfoIcon />
+                    </span>
+                    <p className="font-bold hover:underline cursor-pointer">About</p>
+                  </div> */}
+            <div className="flex gap-4 md:w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded" onClick={handleLogout}>
               <span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                </svg>
+                <LogoutIcon />
               </span>
-              <p className="font-bold hover:underline cursor-pointer">About</p>
-            </div>
-            <div className="flex gap-4 w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                </svg>
-              </span>
-              <p className="font-bold hover:underline cursor-pointer">Theme</p>
-            </div>
-            <div className="flex gap-4 w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-              </span>
-              <p className="font-bold hover:underline cursor-pointer">Report</p>
-            </div>
-            <div className="flex gap-4 w-1/4 hover:bg-snow-drift-300 py-1 px-3 rounded" onClick={handleLogout}>
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                </svg>
-              </span>
-              <p className="font-bold hover:underline cursor-pointer text-blue-500">Log Out</p>
+              <p className="font-bold hover:underline cursor-pointer text-blue-500">Logout</p>
             </div>
           </div>
         </div>

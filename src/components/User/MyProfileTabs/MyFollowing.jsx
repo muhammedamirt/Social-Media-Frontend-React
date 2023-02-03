@@ -23,9 +23,9 @@ const MyFollowing = ({ followingData }) => {
                                             <h4 className="text-sm leading-3">{following?.following?.username}</h4>
                                         </div>
                                     </div>
-                                    <button className="text-heavy-metal-800 px-6 rounded-xl font-bold text-md border-heavy-metal-800 border-4 hover:bg-heavy-metal-800 hover:text-snow-drift-50">
+                                    {/* <button className="text-heavy-metal-800 px-6 rounded-xl font-bold text-md border-heavy-metal-800 border-4 hover:bg-heavy-metal-800 hover:text-snow-drift-50">
                                         UnFollow
-                                    </button>
+                                    </button> */}
                                 </div>
                             )
                         })

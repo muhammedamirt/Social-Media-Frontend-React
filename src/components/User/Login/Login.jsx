@@ -5,6 +5,7 @@ import { loginApi } from '../../../api/user'
 import { routeChanged } from "../../../redux/topLoadingBar"
 import { userAddDetails } from '../../../redux/authSliceUser'
 import ParticlesBg from "../ParticlesBg/Particles"
+import GoogleSignUp from "../Register/GoogleSignUp"
 const Login = () => {
     const dispatch = useDispatch()
     dispatch(routeChanged())
@@ -26,13 +27,11 @@ const Login = () => {
         e.preventDefault()
         if (emailValidate && passwordValid) {
             let data = await loginApi(email, password)
-            console.log(data);
             if (data?.passwordError) {
                 setPasswordError(true)
             } else if (data?.emailError) {
                 setEmailError(true)
             } else if (data?.success) {
-                console.log(data?.token);
                 localStorage.setItem('userToken', data?.token)
                 localStorage.setItem('id', data?.id)
                 dispatch(userAddDetails({ token: data?.token, id: data?.id }))
@@ -102,14 +101,11 @@ const Login = () => {
                                 <p className=" text-sm text-heavy-metal-900">Register?<span className="text-blue-600 cursor-pointer hover:underline">Click Me</span></p>
                             </Link>
                         </div>
-                        <div className="flex justify-center">
+                        <div className="flex justify-center w-full">
                             <h4>------OR------</h4>
                         </div>
-                        <div className="flex gap-2 justify-center border-2 bg-white border-heavy-metal-800 shadow-md rounded-md hover:bg-heavy-metal-100 shadow-heavy-metal-700 py-2">
-                            <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-                                <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" /></svg>
-                            <h3 className="mt-1">Google</h3>
-
+                        <div className="flex justify-center ">
+                        <GoogleSignUp />
                         </div>
                         <p className="text-sm text-red-600">{authCommonMessage}</p>
 

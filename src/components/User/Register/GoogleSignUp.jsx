@@ -1,16 +1,68 @@
 import React from 'react'
-
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwtDecode from 'jwt-decode';
+import { useState } from 'react';
+import { googleLoginAPI, googleSignUpAPI } from '../../../api/user';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userAddDetails } from '../../../redux/authSliceUser';
 const GoogleSignUp = () => {
-  const handleGoogleSignUp = () =>{
-    
+  const [loginErrorMessage, setLoginErrorMessage] = useState(false)
+  const [signUpErrorMessage, setSignUpErrorMessage] = useState(false)
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handelGoogleSignUp = async (credentialResponse) => {
+    setLoginErrorMessage(false)
+    console.log(credentialResponse);
+    const decoded = jwtDecode(credentialResponse.credential);
+    const { name, picture, email } = decoded
+    const response = await googleSignUpAPI({ name, picture, email })
+    console.log(response);
+    if (response?.authStatus) {
+      localStorage.setItem('userToken', response?.token)
+      localStorage.setItem('id', response?.id)
+      dispatch(userAddDetails({ token: response?.token, id: response?.id }))
+      navigate('/')
+    } else {
+      setSignUpErrorMessage(true)
+    }
   }
+
+  const handelGoogleSignIn = async (credentialResponse) => {
+    setSignUpErrorMessage(false)
+    console.log(credentialResponse);
+    const decoded = jwtDecode(credentialResponse.credential);
+    const { email } = decoded
+    const response = await googleLoginAPI({ email })
+    console.log(response);
+    if (response?.authStatus) {
+      localStorage.setItem('userToken', response?.token)
+      localStorage.setItem('id', response?.id)
+      dispatch(userAddDetails({ token: response?.token, id: response?.id }))
+      navigate('/')
+    } else {
+      setLoginErrorMessage(true)
+    }
+  }
+
   return (
     <div>
-      <div onClick={handleGoogleSignUp} className="flex gap-2 justify-center border-2 bg-white border-heavy-metal-800 shadow-md rounded-md hover:bg-heavy-metal-100 shadow-heavy-metal-700 py-3">
-        <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-          <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" /></svg>
-        <h3 className="mt-1">Google</h3>
-      </div>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <GoogleLogin size='large'
+          onSuccess={(credentialResponse) => {
+            location.pathname === '/register' ?
+              handelGoogleSignUp(credentialResponse) :
+              handelGoogleSignIn(credentialResponse)
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </GoogleOAuthProvider>
+      {loginErrorMessage && <p className='text-red-500 flex justify-center mt-2'>email not registered</p>}
+      {signUpErrorMessage && <p className='text-red-500 flex justify-center mt-2'>email All ready registered</p>}
     </div>
   )
 }
