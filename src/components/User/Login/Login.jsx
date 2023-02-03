@@ -109,7 +109,7 @@ const Login = () => {
                         </div>
                         <p className="text-sm text-red-600">{authCommonMessage}</p>
 
-                        <button disabled={emailValidate && passwordValid ? false : true} className="w-full my-5 py-3 border-white border-2 bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleLogin}>Sign In</button>
+                        <button type="button" disabled={emailValidate && passwordValid ? false : true} className="w-full my-5 py-3 border-white border-2 bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleLogin}>Sign In</button>
                     </form>
                 </div>
             </div>
