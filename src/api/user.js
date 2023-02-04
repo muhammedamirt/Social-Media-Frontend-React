@@ -3,7 +3,7 @@ import axios from "axios";
 const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL })
 
 export const loginApi = async (email, password) => {
-    let { data } = await API.post('/login', { email, password }, { withCredentials: true })
+    let { data } = await API.post('/login', { email, password })
     return data;
 }
 
