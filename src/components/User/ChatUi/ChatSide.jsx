@@ -25,7 +25,7 @@ const Messages = () => {
     const socket = useRef();
     const dispatch = useDispatch()
     useEffect(() => {
-        socket.current = io("http://localhost:8800");
+        socket.current = io("https://wouldosocket.iworldecart.shop");
         socket.current.emit("new-user-add", userId);
         socket.current.on("get-user", (users) => {
             setOnlineUsers(users);
