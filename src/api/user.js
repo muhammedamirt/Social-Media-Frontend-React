@@ -3,17 +3,32 @@ import axios from "axios";
 const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL })
 
 export const loginApi = async (email, password) => {
-    let { data } = await API.post('/login', { email, password })
+    let { data } = await API.post('/login', { email, password }, {
+        withCredentials: true,
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+    })
     return data;
 }
 
 export const signupApi = async (signupData) => {
-    let { data } = await API.post('/register', signupData, { withCredentials: true })
+    let { data } = await API.post('/register', signupData, {
+        withCredentials: true,
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+    })
     return data;
 }
 
 export const verifyEmailFunc = async (id, token) => {
-    let { data } = await API.get(`/verifySignup/${id}/${token}`, { withCredentials: true })
+    let { data } = await API.get(`/verifySignup/${id}/${token}`, {
+        withCredentials: true,
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+    })
     return data;
 }
 
@@ -31,8 +46,6 @@ export const fetchUserPosts = async (userId) => {
     let { data } = await API.get(`/getUserPosts/${userId}`)
     return data;
 }
-
-
 
 export const fetchFollowersPosts = async (userId) => {
     let { data } = await API.get(`/fetchFollowersPosts/${userId}`, {
@@ -53,8 +66,6 @@ export const fetchOneUserProfile = async (userId) => {
     })
     return data;
 }
-
-
 
 export const followUser = async (userId, myId) => {
     let { data } = await API.get(`/followUser/${userId}/${myId}`, {
