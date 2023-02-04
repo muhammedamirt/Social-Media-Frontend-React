@@ -5,9 +5,6 @@ const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL })
 export const loginApi = async (email, password) => {
     let { data } = await API.post('/login', { email, password }, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
@@ -15,19 +12,13 @@ export const loginApi = async (email, password) => {
 export const signupApi = async (signupData) => {
     let { data } = await API.post('/register', signupData, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
 
 export const verifyEmailFunc = async (id, token) => {
     let { data } = await API.get(`/verifySignup/${id}/${token}`, {
-        withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
+        withCredentials: true, 
     })
     return data;
 }
