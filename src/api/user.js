@@ -26,9 +26,6 @@ export const verifyEmailFunc = async (id, token) => {
 export const userDataToProfile = async (userId) => {
     let { data } = await API.get(`/getUserData/${userId}`, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
@@ -41,9 +38,6 @@ export const fetchUserPosts = async (userId) => {
 export const fetchFollowersPosts = async (userId) => {
     let { data } = await API.get(`/fetchFollowersPosts/${userId}`, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
@@ -51,9 +45,6 @@ export const fetchFollowersPosts = async (userId) => {
 export const fetchOneUserProfile = async (userId) => {
     let { data } = await API.get(`/fetchSpecificUser/${userId}`, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
@@ -61,9 +52,6 @@ export const fetchOneUserProfile = async (userId) => {
 export const followUser = async (userId, myId) => {
     let { data } = await API.get(`/followUser/${userId}/${myId}`, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
@@ -80,18 +68,12 @@ export const editProfile = async (formData) => {
 export const fetchFollowers = async (userId) => {
     let { data } = await API.get(`/getUserFollowers/${userId}`, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
 export const fetchFollowing = async (userId) => {
     let { data } = await API.get(`/getUserFollowing/${userId}`, {
         withCredentials: true,
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-        },
     })
     return data;
 }
