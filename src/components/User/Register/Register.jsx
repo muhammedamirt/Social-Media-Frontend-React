@@ -5,11 +5,12 @@ import { routeChanged } from "../../../redux/topLoadingBar"
 import PasswordStrengthBar from 'react-password-strength-bar';
 import PasswordChecklist from "react-password-checklist"
 import ParticlesBg from "../ParticlesBg/Particles"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleSignUp from "./GoogleSignUp";
 
 const Register = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     dispatch(routeChanged())
     const [firstName, setFirstName] = useState('')
     const [firstNameValidate, setFirstNameValidate] = useState(false)
@@ -104,6 +105,7 @@ const Register = () => {
                 } else if (data?.emailExist) {
                     setEmailExist(true)
                 } else if (data?.sendEmail) {
+                    navigate('/login')
                     setSuccessMessage(true)
                 }
             } else {
