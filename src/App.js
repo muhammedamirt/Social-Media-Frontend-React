@@ -42,7 +42,7 @@ function App() {
         loaderSpeed={1000}
       />
       <Routes>
-        <Route path="/" element={<Home />} exact />
+        <Route path="/" element={<PublicRoute><Home /></PublicRoute>} exact />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} exact />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} exact />
         <Route path="/profile/:userId" element={<ProtectedRoute><ProfileParamsCheck><Profile /></ProfileParamsCheck></ProtectedRoute>} exact />
