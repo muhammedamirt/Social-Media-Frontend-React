@@ -42,7 +42,7 @@ function App() {
         loaderSpeed={1000}
       />
       <Routes>
-        <Route path="/" element={<PublicRoute><Home /></PublicRoute>} exact />
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} exact />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} exact />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} exact />
         <Route path="/profile/:userId" element={<ProtectedRoute><ProfileParamsCheck><Profile /></ProfileParamsCheck></ProtectedRoute>} exact />
@@ -58,7 +58,7 @@ function App() {
         <Route path="/savedPosts" element={<ProtectedRoute><SavedPosts /></ProtectedRoute>} exact />
         <Route path="/singlePost" element={<ProtectedRoute><PostOneView /></ProtectedRoute>} exact />
         <Route path="/shortVideos" element={<ProtectedRoute><Video /></ProtectedRoute>} exact />
-        <Route path="*" element={<ErrorPage404 />} exact /> 
+        <Route path="*" element={<ErrorPage404 />} exact />
       </Routes>
       {/* admin routes  */}
       <Routes>
