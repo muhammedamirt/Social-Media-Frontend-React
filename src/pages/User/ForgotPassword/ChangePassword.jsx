@@ -31,7 +31,6 @@ const ChangePassword = () => {
         }
         if (passwordVal && confirmPasswordChange && password === confirmPassword) {
             const response = await changePasswordAPI(sendData)
-            console.log(response, 'response');
             setLoading(false)
             if (response?.status) {
                 setSuccessMessage(true)

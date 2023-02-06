@@ -15,11 +15,9 @@ const GoogleSignUp = () => {
 
   const handelGoogleSignUp = async (credentialResponse) => {
     setLoginErrorMessage(false)
-    console.log(credentialResponse);
     const decoded = jwtDecode(credentialResponse.credential);
     const { name, picture, email } = decoded
     const response = await googleSignUpAPI({ name, picture, email })
-    console.log(response);
     if (response?.authStatus) {
       localStorage.setItem('userToken', response?.token)
       localStorage.setItem('id', response?.id)
@@ -32,11 +30,9 @@ const GoogleSignUp = () => {
 
   const handelGoogleSignIn = async (credentialResponse) => {
     setSignUpErrorMessage(false)
-    console.log(credentialResponse);
     const decoded = jwtDecode(credentialResponse.credential);
     const { email } = decoded
     const response = await googleLoginAPI({ email })
-    console.log(response);
     if (response?.authStatus) {
       localStorage.setItem('userToken', response?.token)
       localStorage.setItem('id', response?.id)

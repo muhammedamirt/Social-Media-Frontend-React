@@ -28,7 +28,6 @@ const FileTab = () => {
         const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
         const feed = e.target.files[0]
         if (!allowedExtensions.exec(feed.name)) {
-            console.log('not a image');
             setImgValidate(true)
         } else {
             setImgValidate(false)

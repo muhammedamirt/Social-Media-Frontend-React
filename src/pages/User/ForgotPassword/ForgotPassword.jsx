@@ -22,12 +22,10 @@ const ForgotPassword = () => {
   }
 
   const handleEmailSend = async () => {
-    console.log('hello');
     try {
       setLoading(true)
       if (emailValidate) {
         const response = await forgotPasswordAPI(email)
-        console.log(response, 'response');
         setLoading(false)
         if (response?.status === true) {
           setUserNotFount(false)

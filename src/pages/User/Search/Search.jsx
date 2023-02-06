@@ -19,7 +19,6 @@ const Search = () => {
                     setSearchUsers(searchResponse)
                 } else {
                     setSearchUsers([])
-                    console.log('null search input');
                 }
             }
             fetchSearchData()

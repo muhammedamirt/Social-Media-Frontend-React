@@ -90,11 +90,10 @@ const Profile = () => {
     const createMessage = async () => {
         const senderId = localStorage.getItem('id')
         const response = await createChat({ senderId, receiverId: userId });
-        console.log(response);
         if (response.status === 200) {
             navigate('/chats')
         }else{
-            console.log('llo');
+            console.log('nop');
             // navigate('/chats')
         }
     };

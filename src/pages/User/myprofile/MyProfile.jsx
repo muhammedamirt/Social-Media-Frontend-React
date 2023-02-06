@@ -66,7 +66,6 @@ const MyProfile = () => {
         setAboutTab(false)
         setFollowersTab(true)
         let data = await fetchFollowers(userId)
-        console.log(data);
         if (data?.length !== 0) {
             setFollowersData(data)
         }

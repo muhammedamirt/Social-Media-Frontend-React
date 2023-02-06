@@ -12,7 +12,6 @@ const AllUser = ({ data, currentUserId, onlineUsers}) => {
         getUserData();
     }, []);
 
-  console.log(onlineUsers,'online');
     return (
         <>
             <div className=" flex flex-row py-4 px-2 mx-1 h-full justify-center items-center border-b-2 hover:bg-snow-drift-200">

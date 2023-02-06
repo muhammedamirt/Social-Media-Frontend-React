@@ -12,7 +12,6 @@ const SavedPosts = () => {
     useEffect(() => {
         const fetchSavedPost = async () => {
             const response = await fetchSavedPostsAPI(userId)
-            console.log(response, 'response');
             setSavedPost(response)
         }
         fetchSavedPost()

@@ -13,7 +13,6 @@ const UsersList = () => {
      try {
             const fetchAllUsers = async () => {
                 const data = await allUsersApi()
-                console.log(data,'userPage');
                 setPeople(data)
             }
             fetchAllUsers()

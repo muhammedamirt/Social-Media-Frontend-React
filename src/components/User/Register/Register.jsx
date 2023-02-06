@@ -95,7 +95,6 @@ const Register = () => {
     const handleSignup = async (e) => {
         e.preventDefault()
         if (firstName !== "" && lastName !== "" && userName !== "" && email !== "" && password !== "" && confirmPassword !== "") {
-            console.log(!firstNameValidate, !lastNameVal, !emailVal, !passwordVal, !confirmPassword);
             if (!firstNameValidate && !lastNameVal && !emailVal && passwordVal && confirmPassword) {
                 setUserNameExist(false)
                 setEmailExist(false)

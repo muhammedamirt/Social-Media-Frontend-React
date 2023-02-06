@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useDispatch } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { verifyEmailFunc } from "../../../api/user"
@@ -11,7 +12,6 @@ const VerifyEmail = () => {
     const handleVerifyEmail =async (e) => {
         e.preventDefault()
         let data =await verifyEmailFunc(id, token)
-        console.log(data);
         navigate('/login')
     }
     return (

@@ -9,7 +9,6 @@ const Video = () => {
     useEffect(() => {
         const getVideoData = async () => {
             const response = await getAllVideoAPI()
-            console.log(response);
             setVideos(response)
         }
         getVideoData()

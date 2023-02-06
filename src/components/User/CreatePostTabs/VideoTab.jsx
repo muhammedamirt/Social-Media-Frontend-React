@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Card } from "../Card/Card"
 import { Alert } from "@mui/material";
 import { useState } from "react";
@@ -37,10 +38,8 @@ const VideoTab = () => {
       };
       const result = await s3.upload(params).promise();
       const url = result?.Location;
-      console.log(result?.Location);
       // const url = "https://connect-with-post.s3.ap-south-1.amazonaws.com/shorts/Sample%20Videos%20-%20Dummy%20Videos%20For%20Demo%20Use%20%282%29.mp4";
       const response = await uploadVideoFileAPI({ url, captions, userId })
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
