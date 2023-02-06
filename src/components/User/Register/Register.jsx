@@ -7,6 +7,7 @@ import PasswordChecklist from "react-password-checklist"
 import ParticlesBg from "../ParticlesBg/Particles"
 import { Link, useNavigate } from "react-router-dom";
 import GoogleSignUp from "./GoogleSignUp";
+import { CircularProgress } from "@mui/material";
 
 const Register = () => {
     const dispatch = useDispatch()
@@ -29,6 +30,7 @@ const Register = () => {
     const [emailExist, setEmailExist] = useState(false)
     const [userNameExist, setUserNameExist] = useState(false)
     const [successMessage, setSuccessMessage] = useState(false)
+    const [loading, setLoading] = useState()
 
     useEffect(() => {
         let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
@@ -47,16 +49,6 @@ const Register = () => {
         } else {
             setEmailVal(false)
         }
-        // if (password.length < 8 && password !== "") {
-        //     setPasswordVal(true)
-        // } else {
-        //     setPasswordVal(false)
-        // }
-        // if (password === confirmPassword && confirmPassword !== "") {
-        //     setConfirmPasswordVal(false)
-        // } else {
-        //     setConfirmPasswordVal(true)
-        // }
     }, [firstName, lastName, userName, email, password, confirmPassword])
 
     const firstNameChange = (e) => {
@@ -94,11 +86,13 @@ const Register = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault()
+        setLoading(true)
         if (firstName !== "" && lastName !== "" && userName !== "" && email !== "" && password !== "" && confirmPassword !== "") {
             if (!firstNameValidate && !lastNameVal && !emailVal && passwordVal && confirmPassword) {
                 setUserNameExist(false)
                 setEmailExist(false)
                 let data = await signupApi(signupData)
+                setLoading(false)
                 if (data?.userNameExist) {
                     setUserNameExist(true)
                 } else if (data?.emailExist) {
@@ -109,9 +103,11 @@ const Register = () => {
                 }
             } else {
                 setValError(true)
+                setLoading(false)
             }
         } else {
             setBlankCheck(true)
+            setLoading(false)
         }
     }
 
@@ -190,10 +186,14 @@ const Register = () => {
                         <div className="flex justify-center w-full">
                             <GoogleSignUp />
                         </div>
+                        {loading &&
+                            <div className="flex justify-center">
+                                <CircularProgress color="success" />
+                            </div>}
                         {blankCheck && <p className="text-red-600 text-sm text-center">Fill all Fields</p>}
                         {valError && <p className="text-red-600 text-sm text-center">Some Data is Wrong</p>}
                         {successMessage && <p className="text-green-800 font-bold text-center">Verification link sent to your Email</p>}
-                        {!successMessage && <button className="w-full my-5 py-3 border-white border-2 bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleSignup}>Sign Up</button>}
+                        {!successMessage && !loading && <button className="w-full my-5 py-3 border-white border-2 bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleSignup}>Sign Up</button>}
                     </form>
                 </div>
             </div>

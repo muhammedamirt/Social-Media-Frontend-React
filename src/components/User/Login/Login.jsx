@@ -6,6 +6,7 @@ import { routeChanged } from "../../../redux/topLoadingBar"
 import { userAddDetails } from '../../../redux/authSliceUser'
 import ParticlesBg from "../ParticlesBg/Particles"
 import GoogleSignUp from "../Register/GoogleSignUp"
+import { CircularProgress } from "@mui/material"
 const Login = () => {
     const dispatch = useDispatch()
     dispatch(routeChanged())
@@ -17,6 +18,7 @@ const Login = () => {
     const [emailError, setEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
     const [authCommonMessage, setAuthCommonMessage] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     useEffect(() => {
         setEmailValidate(email.includes('@') && email.trim().length > 7)
@@ -25,8 +27,10 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
+        setLoading(true)
         if (emailValidate && passwordValid) {
             let data = await loginApi(email, password)
+            setLoading(false)
             if (data?.passwordError) {
                 setPasswordError(true)
             } else if (data?.emailError) {
@@ -105,11 +109,14 @@ const Login = () => {
                             <h4>------OR------</h4>
                         </div>
                         <div className="flex justify-center ">
-                        <GoogleSignUp />
+                            <GoogleSignUp />
                         </div>
                         <p className="text-sm text-red-600">{authCommonMessage}</p>
-
-                        <button type="button" disabled={emailValidate && passwordValid ? false : true} className="w-full my-5 py-3 border-white border-2 bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleLogin}>Sign In</button>
+                        {loading &&
+                            <div className="flex justify-center">
+                                <CircularProgress color="success" />
+                            </div>}
+                        {!loading && <button type="button" disabled={emailValidate && passwordValid ? false : true} className="w-full my-5 py-3 border-white border-2 bg-heavy-metal-500 shadow-lg text-snow-drift-50 hover:shadow-heavy-metal-700  font-semibold rounded-lg" onClick={handleLogin}>Sign In</button>}
                     </form>
                 </div>
             </div>

@@ -27,6 +27,7 @@ import ChatPage from "./pages/User/Chat/ChatPage";
 import PostOneView from "./pages/User/PostOneView/PostOneView";
 import ProfileParamsCheck from "./pages/User/Profile/profileParamsCheck";
 import Video from "./pages/User/Videos/Video";
+import ErrorPage404 from "./components/User/404/ErrorPage404";
 
 function App() {
   // const [userLoggedIn, setUserLoggedIn] = useState(true)
@@ -41,11 +42,11 @@ function App() {
         loaderSpeed={1000}
       />
       <Routes>
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} exact />
+        <Route path="/" element={<Home />} exact />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} exact />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} exact />
         <Route path="/profile/:userId" element={<ProtectedRoute><ProfileParamsCheck><Profile /></ProfileParamsCheck></ProtectedRoute>} exact />
-        <Route path="/:id/Verify/:token" element={<ProtectedRoute><VerifyEmail /></ProtectedRoute> }/>
+        <Route path="/:id/Verify/:token" element={<ProtectedRoute><VerifyEmail /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="/notifications" element={<ProtectedRoute ><Notification /> </ProtectedRoute>} exact />
         <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} exact />
@@ -57,6 +58,7 @@ function App() {
         <Route path="/savedPosts" element={<ProtectedRoute><SavedPosts /></ProtectedRoute>} exact />
         <Route path="/singlePost" element={<ProtectedRoute><PostOneView /></ProtectedRoute>} exact />
         <Route path="/shortVideos" element={<ProtectedRoute><Video /></ProtectedRoute>} exact />
+        <Route path="*" element={<ErrorPage404 />} exact /> 
       </Routes>
       {/* admin routes  */}
       <Routes>

@@ -4,7 +4,6 @@ import { routeChanged } from '../../../redux/topLoadingBar'
 import { useDispatch } from "react-redux"
 import { fetchFollowersPosts } from "../../../api/user"
 import { useEffect, useState } from "react"
-import ProtectedRoute from "../../../components/User/ProtectedRout/ProtectedRoute"
 import { Card } from "../../../components/User/Card/Card"
 // import Story from "../../../components/User/Story/Story"
 
@@ -30,7 +29,6 @@ const Home = () => {
 
 
   return (
-    <ProtectedRoute>
       <Layout>
         {/* <Story /> */}
         {userPosts.length !== 0 ?
@@ -79,7 +77,6 @@ const Home = () => {
           </div>
         }
       </Layout>
-    </ProtectedRoute>
   )
 }
 
