@@ -70,74 +70,73 @@ const PostSettings = ({ postData }) => {
                             Report
                         </p>
                         <div>
-                            {
-                                report && <div>
-                                    <>
-                                        <div className=" justify-center w-full items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                                                {/* {/content/} */}
-                                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                                    {/* {/header/} */}
-                                                    <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                                                        <h3 className="text-3xl font-semibold">Report Post</h3>
+                            { report && <div>
+                                <>
+                                    <div className=" justify-center w-full items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                            {/* {/content/} */}
+                                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                                {/* {/header/} */}
+                                                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                                    <h3 className="text-3xl font-semibold">Report Post</h3>
+                                                </div>
+                                                {/* {/body/}   */}
+                                                <div className='flex justify-center mt-5 w-full '>
+                                                    <select onChange={handelSelectChange} className='w-full mx-3 py-2 px-2 rounded-md outline-none' placeholder='select reason'>
+                                                        <option className='text-sm'>Select</option>
+                                                        <option className='text-sm' value="I just don't like it">I just don't like it</option>
+                                                        <option className='text-sm' value="It's Spam">It's Spam</option>
+                                                        <option className='text-sm' value="Violence">Violence</option>
+                                                        <option className='text-sm' value="Nudity or sexual activity">Nudity or sexual activity</option>
+                                                        <option className='text-sm' value="Celebrity insulting">Celebrity insulting</option>
+                                                    </select>
+                                                </div>
+                                                {selectError &&
+                                                    <div className='mx-5 my-1'>
+                                                        <Alert severity="error">please select a reason!</Alert>
                                                     </div>
-                                                    {/* {/body/}   */}
-                                                    <div className='flex justify-center mt-5 w-full '>
-                                                        <select onChange={handelSelectChange} className='w-full mx-3 py-2 px-2 rounded-md outline-none' placeholder='select reason'>
-                                                            <option className='text-sm'>Select</option>
-                                                            <option className='text-sm' value="I just don't like it">I just don't like it</option>
-                                                            <option className='text-sm' value="It's Spam">It's Spam</option>
-                                                            <option className='text-sm' value="Violence">Violence</option>
-                                                            <option className='text-sm' value="Nudity or sexual activity">Nudity or sexual activity</option>
-                                                            <option className='text-sm' value="Celebrity insulting">Celebrity insulting</option>
-                                                        </select>
+                                                }
+                                                {success &&
+                                                    <div className='mx-5 my-1'>
+                                                        <Alert severity="success">Successfully completed!</Alert>
+                                                        <div className='flex justify-center w-full'>
+                                                            <CircularProgress />
+                                                        </div>
                                                     </div>
-                                                    {selectError &&
-                                                        <div className='mx-5 my-1'>
-                                                            <Alert severity="error">please select a reason!</Alert>
-                                                        </div>
-                                                    }
-                                                    {success &&
-                                                        <div className='mx-5 my-1'>
-                                                            <Alert severity="success">Successfully completed!</Alert>
-                                                            <div className='flex justify-center w-full'>
-                                                                <CircularProgress />
-                                                            </div>
-                                                        </div>
-                                                    }
+                                                }
 
-                                                    {/* {/footer/} */}
-                                                    <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                                                        <div>
-                                                            <button
-                                                                className="text-red-500 hover:text-white hover:bg-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                type="button"
-                                                                onClick={handleClose}
-                                                            >
-                                                                Close
-                                                            </button>
-                                                        </div>
-                                                        <div>
-                                                            {!success && <div className='flex justify-center mt-2 '>
-                                                                {
-                                                                    loading ? <CircularProgress /> :
-                                                                        <button
-                                                                            className="bg-slate-700 text-white active:bg-slate-400 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                            type="button"
-                                                                            onClick={handleReport}
-                                                                        >
-                                                                            Report
-                                                                        </button>
-                                                                }
-                                                            </div>}
-                                                        </div>
+                                                {/* {/footer/} */}
+                                                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                                    <div>
+                                                        <button
+                                                            className="text-red-500 hover:text-white hover:bg-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                            type="button"
+                                                            onClick={handleClose}
+                                                        >
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        {!success && <div className='flex justify-center mt-2 '>
+                                                            {
+                                                                loading ? <CircularProgress /> :
+                                                                    <button
+                                                                        className="bg-slate-700 text-white active:bg-slate-400 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                        type="button"
+                                                                        onClick={handleReport}
+                                                                    >
+                                                                        Report
+                                                                    </button>
+                                                            }
+                                                        </div>}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                                    </>
-                                </div>
+                                    </div>
+                                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                </>
+                            </div>
                             }
                         </div>
                     </div>

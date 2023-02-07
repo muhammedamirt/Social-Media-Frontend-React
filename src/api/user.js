@@ -60,7 +60,6 @@ export const editProfile = async (formData) => {
     let { data } = await API.post("/editProfile", formData, {
         withCredentials: true,
     })
-    console.log("responsevannu,", data);
     return data;
 };
 
