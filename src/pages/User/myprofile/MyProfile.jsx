@@ -102,7 +102,7 @@ const MyProfile = () => {
                                 </div>
                                 <div className="flex absolute w-full justify-center md:justify-start  top-14 md:left-4">
                                     <div className='w-36 h-36 rounded-full overflow-hidden object-cover shadow-sm shadow-gray-500'>
-                                        <img src={userData?.picture} alt="avatars" className="w-full h-full" />
+                                        <img src={userData?.picture} alt="avatars" className="w-full h-full object-cover " />
                                     </div>
                                 </div>
                                 <div className="flex justify-center md:px-14">

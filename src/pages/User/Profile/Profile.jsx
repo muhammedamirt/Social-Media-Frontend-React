@@ -112,7 +112,7 @@ const Profile = () => {
                             </div>
                             <div className="flex absolute w-full justify-center md:justify-start  top-14 md:left-4">
                                 <div className='w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover overflow-hidden shadow-sm shadow-gray-500'>
-                                    <img src={specificUser?.picture} alt="avatars" className="w-full h-full" />
+                                    <img src={specificUser?.picture} alt="avatars" className="w-full h-full object-cover" />
                                 </div>
                             </div>
                             <div className="flex justify-center md:px-14">
