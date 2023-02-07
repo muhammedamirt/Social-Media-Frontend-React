@@ -58,14 +58,12 @@ function App() {
         <Route path="/savedPosts" element={<ProtectedRoute><SavedPosts /></ProtectedRoute>} exact />
         <Route path="/singlePost" element={<ProtectedRoute><PostOneView /></ProtectedRoute>} exact />
         <Route path="/shortVideos" element={<ProtectedRoute><Video /></ProtectedRoute>} exact />
-        <Route path="*" element={<ErrorPage404 />} exact />
-      </Routes>
-      {/* admin routes  */}
-      <Routes>
+        {/* admin routes  */}
         <Route path="/admin/" element={<AdminProtectRoute><AdminHome /></AdminProtectRoute>} exact />
         <Route path="/admin/login" element={<AdminPublicRoute><AdminLogin /></AdminPublicRoute>} exact />
         <Route path="/admin/users" element={<AdminProtectRoute><UsersList /></AdminProtectRoute>} exact />
         <Route path="/admin/settings" element={<AdminProtectRoute><AdminSettings /></AdminProtectRoute>} exact />
+        <Route path="*" element={<ErrorPage404 />} exact />
       </Routes>
     </div>);
 }
